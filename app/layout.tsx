@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./rose-theme.css";
 export const metadata: Metadata = {
-  title: "TOWARI — この先を、ともにする人と。",
+  title: {
+    default: "TOWARI — この先を、ともにする人と。",
+    template: "%s — TOWARI",
+  },
   description:
     "価値観から、人生をともにする人に出会う。審査制婚活サービス TOWARI。",
 };

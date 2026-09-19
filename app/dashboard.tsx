@@ -20,6 +20,7 @@ import {
   X,
 } from "lucide-react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useRef, useState, useTransition } from "react";
 import { type Member, valueOptions } from "@/lib/data";
 import type { Account } from "@/lib/store";
@@ -30,7 +31,7 @@ import {
   toggleFavorite,
 } from "./actions";
 
-type Tab = "home" | "discover" | "favorites" | "meetings" | "profile";
+export type Tab = "home" | "discover" | "favorites" | "meetings" | "profile";
 const nav = [
   { id: "home" as Tab, label: "ホーム", icon: Home },
   { id: "discover" as Tab, label: "お相手を探す", icon: UsersRound },
@@ -41,11 +42,12 @@ const nav = [
 export default function Dashboard({
   members,
   view,
+  tab,
 }: {
   members: Member[];
   view: "men" | "women";
+  tab: Tab;
 }) {
-  const [tab, setTab] = useState<Tab>("home");
   const [account, setAccount] = useState<Account | null>(null);
   const [modal, setModal] = useState<
     "apply" | "filter" | "notice" | "support" | null
@@ -104,28 +106,28 @@ export default function Dashboard({
   const favoriteCount = members.filter((m) =>
     account?.favorites.includes(m.id),
   ).length;
-  const navigate = (id: Tab) => {
-    setTab(id);
-    setFilter("すべて");
-    setRegion("すべて");
-    setMobile(false);
-  };
+  const router = useRouter();
+  const pathname = usePathname();
+  const href = (id: Tab) =>
+    `${id === "home" ? "/" : `/${id}`}${view === "men" ? "?view=men" : ""}`;
+  const go = (id: Tab) => router.push(href(id));
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-theme={view === "men" ? "rose" : "sage"}>
       <aside className={`sidebar ${mobile ? "is-open" : ""}`}>
-        <a className="brand" href={view === "men" ? "/?view=men" : "/"}>
+        <Link className="brand" href={href("home")}>
           towari<span className="brand-dot">.</span>
-        </a>
+        </Link>
         <div className="brand-caption">この先を、ともにする人と。</div>
         <div className="sidebar-line" />
         <div className="workspace-label">MY TOWARI</div>
-        <nav>
+        <nav aria-label="メインナビゲーション">
           {nav.map(({ id, label, icon: Icon }) => (
-            <button
-              type="button"
+            <Link
               key={id}
+              href={href(id)}
+              aria-current={tab === id ? "page" : undefined}
               className={`nav-item ${tab === id ? "active" : ""}`}
-              onClick={() => navigate(id)}
+              onClick={() => setMobile(false)}
             >
               <Icon size={19} />
               <span>{label}</span>
@@ -133,7 +135,7 @@ export default function Dashboard({
                 <b>{favoriteCount}</b>
               )}
               {id === "home" && <span className="active-dot" />}
-            </button>
+            </Link>
           ))}
         </nav>
         <div className="side-note">
@@ -154,10 +156,10 @@ export default function Dashboard({
           <div className="secure">
             <ShieldCheck size={16} /> 審査制だから、安心の出会い
           </div>
-          <button
-            type="button"
+          <Link
             className="side-user"
-            onClick={() => navigate("profile")}
+            href={href("profile")}
+            onClick={() => setMobile(false)}
           >
             <div className="avatar">
               <UserRound size={20} />
@@ -171,7 +173,7 @@ export default function Dashboard({
               </span>
             </div>
             <ChevronDown size={15} />
-          </button>
+          </Link>
         </div>
       </aside>
       <div className="main-shell">
@@ -202,14 +204,13 @@ export default function Dashboard({
               <Bell size={19} />
               <i />
             </button>
-            <button
-              type="button"
+            <Link
               className="avatar small"
               aria-label="プロフィール"
-              onClick={() => navigate("profile")}
+              href={href("profile")}
             >
               <UserRound size={18} />
-            </button>
+            </Link>
           </div>
         </header>
         <main>
@@ -224,13 +225,13 @@ export default function Dashboard({
             </div>
             <nav className="view-switch" aria-label="体験する会員画面">
               <Link
-                href="/"
+                href={pathname}
                 aria-current={view === "women" ? "page" : undefined}
               >
                 女性のお相手
               </Link>
               <Link
-                href="/?view=men"
+                href={`${pathname}?view=men`}
                 aria-current={view === "men" ? "page" : undefined}
               >
                 男性のお相手
@@ -284,9 +285,9 @@ export default function Dashboard({
                     <br />
                     あなたと同じ未来を想う人が、きっといます。
                   </p>
-                  <button type="button" onClick={() => navigate("discover")}>
+                  <Link href={href("discover")}>
                     あなたに合うお相手を見る <ArrowRight size={17} />
-                  </button>
+                  </Link>
                   <div className="hero-index">
                     <span>01</span>
                     <i />
@@ -325,7 +326,7 @@ export default function Dashboard({
                   type="button"
                   onClick={() =>
                     account?.status === "pending"
-                      ? navigate("profile")
+                      ? go("profile")
                       : setModal("apply")
                   }
                 >
@@ -530,13 +531,9 @@ export default function Dashboard({
                         ? "プロフィールから、審査後の面談希望を登録できます。"
                         : "条件を変えたり、ほかのお相手のプロフィールもご覧ください。"}
                     </p>
-                    <button
-                      type="button"
-                      className="text-button"
-                      onClick={() => navigate("discover")}
-                    >
+                    <Link className="text-button" href={href("discover")}>
                       お相手を探す <ArrowRight size={16} />
-                    </button>
+                    </Link>
                   </div>
                 )}
                 <div className="list-footer">
@@ -603,7 +600,7 @@ export default function Dashboard({
                     type="button"
                     onClick={() =>
                       account?.status === "pending"
-                        ? navigate("profile")
+                        ? go("profile")
                         : setModal("apply")
                     }
                   >

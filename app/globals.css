@@ -356,7 +356,7 @@ main {
   color: #7e8777;
   margin-top: 13px;
 }
-.hero-content > button {
+.hero-content > a {
   font-size: 11px;
   margin-top: 19px;
   display: flex;
@@ -366,6 +366,7 @@ main {
   color: #fff;
   background: #586f50;
   border-radius: 3px;
+  width: fit-content;
 }
 .hero-index {
   position: absolute;
@@ -1232,7 +1233,7 @@ legend small {
   .hero p {
     font-size: 12px;
   }
-  .hero-content > button {
+  .hero-content > a {
     margin-top: 25px;
   }
   .member-photo {

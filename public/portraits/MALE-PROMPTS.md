@@ -1,6 +1,6 @@
 # TOWARI male profile portraits
 
-Created with the built-in image_gen tool. All six subjects are fictional adults. Saved alongside this file as takumi.png, naoki.png, yuto.png, kenta.png, ryosuke.png and sota.png.
+Archived generation prompts. The six original images were removed because their faces were too similar. Current images and prompts are documented in MALE-PROMPTS-V2.md.
 
 ## takumi.png
 

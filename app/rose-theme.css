@@ -1,0 +1,232 @@
+/* The audience theme follows the server-selected view, including dialog content. */
+.app-shell[data-theme="rose"] {
+  --ink: #453039;
+  --muted: #8a747c;
+  --green: #9b5068;
+  --sage: #f3e4e9;
+  --line: #ecdde2;
+  --rose-accent: #9b5068;
+  --rose-strong: #79384e;
+  --rose-soft: #f4e4ea;
+  --rose-wash: #fcf5f7;
+  --rose-surface: #fffafb;
+  --rose-copy: #77616b;
+  min-height: 100dvh;
+  background: #fdf8fa;
+  color: var(--ink);
+
+  & .sidebar,
+  & .topbar,
+  & dialog,
+  & .chips button {
+    background: var(--rose-surface);
+  }
+  & .brand-dot,
+  & .small-emblem,
+  & .onboarding-icon,
+  & .favorite,
+  & .eyebrow,
+  & .hero-eyebrow,
+  & .workspace-label,
+  & .view-context,
+  & .occupation span,
+  & .view-profile,
+  & .progress-label strong,
+  & .journey-card .done,
+  & .journey-card .current,
+  & .journey-card > button,
+  & .values-card button,
+  & .review-state,
+  & .secondary,
+  & .notice-content,
+  & .support-intro,
+  & .support-item,
+  & .support-item h3,
+  & .toast,
+  & footer .footer-logo,
+  & .hero-index span:first-child {
+    color: var(--rose-accent);
+  }
+  & .nav-item,
+  & .page-heading p,
+  & .hero p,
+  & .member-quote,
+  & .side-note > span,
+  & .onboarding p,
+  & .values-card p,
+  & .occupation,
+  & .name-row > span,
+  & .result-line,
+  & .result-line select,
+  & .detail-body > p,
+  & .detail-body h2 small,
+  & .modal-description,
+  & .breadcrumb > span:first-of-type,
+  & .demo-badge,
+  & .heading-seal,
+  & .secure,
+  & .privacy-note,
+  & .list-footer,
+  & footer,
+  & .hero-index,
+  & .progress-label,
+  & .progress-label small,
+  & .journey-card li,
+  & .journey-card small,
+  & .profile-panel p,
+  & .form-note,
+  & label,
+  & legend,
+  & legend small,
+  & .hobbies,
+  & .support-item p,
+  & .empty,
+  & .view-switch a,
+  & .chips button,
+  & .value-choices button {
+    color: var(--rose-copy);
+  }
+  & .nav-item.active,
+  & .value-choices .chosen {
+    background: var(--rose-soft);
+    color: var(--rose-strong);
+    border-color: #d9afbe;
+  }
+  & .hero {
+    background: #f3e3e9;
+  }
+  & .hero-image {
+    background-image:
+      linear-gradient(90deg, #f3e3e9 0%, transparent 25%),
+      linear-gradient(0deg, #45303935, transparent 60%),
+      url("https://images.unsplash.com/photo-1449247709967-d4461a6a6103?auto=format&fit=crop&w=1200&q=90");
+  }
+  & .active-dot,
+  & .hero-eyebrow > span,
+  & .notification i,
+  & .progress-bar i,
+  & .journey-card .current > span {
+    background: var(--rose-accent);
+  }
+  & .primary,
+  & .hero-content > button,
+  & .chips button.selected,
+  & .view-switch a[aria-current="page"] {
+    background: var(--rose-accent);
+    border-color: var(--rose-accent);
+    color: #fff;
+  }
+  & .view-switch a[aria-current="page"]:hover {
+    background: var(--rose-strong);
+    color: #fff;
+  }
+  & .view-switch a:hover {
+    background: #ecd3dd;
+    color: var(--rose-strong);
+  }
+  & .avatar,
+  & .section-heading h2 > span,
+  & .tags span,
+  & .tag,
+  & .journey-card .done > span,
+  & .view-switch,
+  & .profile-symbol {
+    background: var(--rose-soft);
+    color: var(--rose-strong);
+  }
+  & .onboarding,
+  & .journey-card,
+  & .journey-card li > span {
+    background: var(--rose-wash);
+  }
+  & .journey-card .current > span {
+    background: var(--rose-accent);
+    color: #fff;
+  }
+  & .journey-card .done > span {
+    background: var(--rose-soft);
+  }
+  & .values-card {
+    background: #f2e2e8;
+  }
+  & .progress-bar,
+  & .hero-index i,
+  & .name-row i {
+    background: #e7cdd7;
+  }
+  & .line-art {
+    color: #c297a8;
+  }
+  & .photo-badge {
+    background: #fff6faed;
+    color: var(--rose-strong);
+  }
+  & .favorite.saved {
+    color: #ab3f65;
+  }
+  & .member-card,
+  & .onboarding,
+  & .onboarding-icon,
+  & .filter-button,
+  & .chips button,
+  & .view-profile,
+  & .journey-card,
+  & .journey-card li > span,
+  & .journey-card > button,
+  & .empty,
+  & dialog,
+  & input,
+  & select,
+  & .value-choices button,
+  & .secondary,
+  & .toast,
+  & .view-switch {
+    border-color: var(--line);
+  }
+  & .journey-card li:not(:last-child)::before {
+    border-color: #e7cdd7;
+  }
+  & .chips button.selected {
+    border-color: var(--rose-accent);
+  }
+  & .value-choices .chosen {
+    border-color: #d9afbe;
+  }
+  & .member-photo {
+    background: var(--rose-soft);
+  }
+  & .member-card:hover {
+    box-shadow: 0 5px 20px #79384e0b;
+  }
+  & .modal-close {
+    background: #fffafbe8;
+  }
+  & input,
+  & select {
+    color: var(--ink);
+  }
+  & input:focus,
+  & select:focus {
+    outline-color: var(--rose-accent);
+  }
+  & .checkbox input {
+    accent-color: var(--rose-accent);
+  }
+  & dialog {
+    box-shadow: 0 25px 100px #45303930;
+  }
+  & dialog::backdrop {
+    background: #45303965;
+  }
+}
+
+@media (max-width: 700px) {
+  .app-shell[data-theme="rose"] .hero-content {
+    background: linear-gradient(
+      90deg,
+      #f3e3e9fa 0%,
+      #f3e3e9ee 35%,
+      #f3e3e942 100%
+    );
+  }
+}
