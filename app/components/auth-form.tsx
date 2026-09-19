@@ -16,7 +16,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "staff" }) {
   return (
     <main className="tw auth-page">
       <Link href="/" className="wordmark auth-brand">
-        TOWARI
+        TONARI
       </Link>
       <div className="auth-story">
         <Flower2 size={45} strokeWidth={1.3} />
@@ -38,7 +38,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "staff" }) {
         </span>
         <h2>
           {mode === "register"
-            ? "TOWARIをはじめる"
+            ? "TONARIをはじめる"
             : mode === "staff"
               ? "運営ログイン"
               : "おかえりなさい"}

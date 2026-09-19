@@ -137,7 +137,7 @@ export function createAuth(now: () => number = Date.now) {
   };
 }
 const globalAuth = globalThis as unknown as {
-  towariAuthV2?: ReturnType<typeof createAuth>;
+  tonariAuthV2?: ReturnType<typeof createAuth>;
 };
-globalAuth.towariAuthV2 ??= createAuth();
-export const auth = globalAuth.towariAuthV2;
+globalAuth.tonariAuthV2 ??= createAuth();
+export const auth = globalAuth.tonariAuthV2;

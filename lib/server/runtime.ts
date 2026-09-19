@@ -3,11 +3,11 @@ import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
 import { engine } from "@/lib/engine";
-export const SESSION_COOKIE = "towari_session_v2";
+export const SESSION_COOKIE = "tonari_session_v2";
 export function prepareDemo() {
-  const secret = process.env.TOWARI_DEMO_PASSWORD;
+  const secret = process.env.TONARI_DEMO_PASSWORD;
   if (
-    process.env.TOWARI_DEMO_ENABLED === "true" &&
+    process.env.TONARI_DEMO_ENABLED === "true" &&
     secret &&
     secret.length >= 12
   ) {

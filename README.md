@@ -1,4 +1,4 @@
-# TOWARI
+# TONARI
 
 この先を、ともにする人と。結婚相談所に近い、審査制の婚活アプリです。
 
@@ -14,7 +14,7 @@ pnpm dev
 
 http://localhost:3000 で表示します。確認後は Ctrl+C で停止してください。本番モードは `pnpm build` → `pnpm start`。
 
-`.env.local` の `TOWARI_ADMIN_PASSWORD` に16文字以上のパスワードを設定すると `/staff` から審査できます。未設定では運営ログインできません。
+`.env.local` の `TONARI_ADMIN_PASSWORD` に16文字以上のパスワードを設定すると `/staff` から審査できます。未設定では運営ログインできません。
 
 ## 体験の流れ
 
@@ -33,8 +33,8 @@ http://localhost:3000 で表示します。確認後は Ctrl+C で停止して�
 `.env.local` に以下を設定してから起動します。
 
 ```dotenv
-TOWARI_DEMO_ENABLED=true
-TOWARI_DEMO_PASSWORD=自分で決めた12文字以上のパスワード
+TONARI_DEMO_ENABLED=true
+TONARI_DEMO_PASSWORD=自分で決めた12文字以上のパスワード
 ```
 
 承認済みの架空会員12名が用意されます。女性は `member-m1@example.test` ～ `member-m6@example.test`、男性は `member-m7@example.test` ～ `member-m12@example.test`。共通パスワードは上記設定値です。

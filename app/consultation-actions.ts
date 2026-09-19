@@ -151,7 +151,7 @@ export async function uploadPhoto(formData: FormData) {
 }
 export async function staffLogin(password: string) {
   return handle(async () => {
-    const token = auth.staffLogin(password, process.env.TOWARI_ADMIN_PASSWORD);
+    const token = auth.staffLogin(password, process.env.TONARI_ADMIN_PASSWORD);
     await setSession(token);
   });
 }

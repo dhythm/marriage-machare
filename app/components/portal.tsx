@@ -575,7 +575,7 @@ export function Portal({
     >
       <aside className="sidebar">
         <Link href="/" className="wordmark">
-          TOWARI<span>この先を、ともにする人と。</span>
+          TONARI<span>この先を、ともにする人と。</span>
         </Link>
         <div className="sidebar-member">
           <span className="member-monogram">
@@ -709,7 +709,7 @@ export function Portal({
                   {!account.preferenceComplete && (
                     <section className="welcome-panel">
                       <div>
-                        <span className="eyebrow">WELCOME TO TOWARI</span>
+                        <span className="eyebrow">WELCOME TO TONARI</span>
                         <h2>
                           どんな毎日を、
                           <br />
@@ -733,7 +733,7 @@ export function Portal({
               <div className="quiet-quote">
                 <span>“</span>
                 <p>何気ない一日が、ふたりの大切な一日になる。</p>
-                <small>TOWARI</small>
+                <small>TONARI</small>
               </div>
             </>
           )}
@@ -1023,7 +1023,7 @@ export function Portal({
           )}
         </main>
         <footer className="member-footer">
-          <span>TOWARI</span>
+          <span>TONARI</span>
           <small>この先を、ともにする人と。</small>
         </footer>
       </div>
@@ -1138,7 +1138,7 @@ export function Portal({
             )}
             <p>
               <b>{active?.partner.name || "お相手"}</b>
-              との、TOWARI上のご縁を終了します。
+              との、TONARI上のご縁を終了します。
             </p>
             <div className="notice-panel">
               <h3>お相手に届くお知らせ</h3>
@@ -1177,7 +1177,7 @@ export function Portal({
       )}
       {withdraw && (
         <Modal
-          title="TOWARIを退会しますか。"
+          title="TONARIを退会しますか。"
           onClose={() => setWithdraw(false)}
         >
           <div className="detail-body">

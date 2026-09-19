@@ -43,12 +43,12 @@ export function PublicHome() {
         本文へ移動
       </a>
       <header className="lp-header">
-        <Link href="/" className="lp-logo" aria-label="TOWARI ホーム">
-          TOWARI<span>この先を、ともにする人と。</span>
+        <Link href="/" className="lp-logo" aria-label="TONARI ホーム">
+          TONARI<span>この先を、ともにする人と。</span>
         </Link>
         <nav aria-label="サービス案内">
           <a className="lp-nav-story" href="#philosophy">
-            TOWARIの想い
+            TONARIの想い
           </a>
           <a className="lp-nav-story" href="#journey">
             出会いのかたち
@@ -67,7 +67,7 @@ export function PublicHome() {
             <Image
               className="lp-hero-image"
               src="/brand/shared-morning.webp"
-              alt="朝の食卓で、ゆっくりと言葉を交わすふたり。TOWARIのブランドイメージ"
+              alt="朝の食卓で、ゆっくりと言葉を交わすふたり。TONARIのブランドイメージ"
               fill
               priority
               sizes="100vw"
@@ -92,7 +92,7 @@ export function PublicHome() {
             </p>
           </div>
           <a className="lp-scroll" href="#philosophy">
-            <ArrowDown size={17} /> TOWARIについて
+            <ArrowDown size={17} /> TONARIについて
           </a>
           <Link className="lp-hero-entry" href="/register">
             <span>
@@ -150,7 +150,7 @@ export function PublicHome() {
               重ねていける、生涯のパートナー。
             </p>
             <p>
-              TOWARIは、あなたが大切にしたい暮らしから、
+              TONARIは、あなたが大切にしたい暮らしから、
               <br className="lp-desktop-break" />
               ふたりの未来を考える婚活です。
             </p>
@@ -205,7 +205,7 @@ export function PublicHome() {
           aria-labelledby="lp-journey-title"
         >
           <div className="lp-journey-heading">
-            <p className="lp-section-label">TOWARIの出会い方</p>
+            <p className="lp-section-label">TONARIの出会い方</p>
             <h2 id="lp-journey-title">
               急がずに。
               <br />
@@ -253,7 +253,7 @@ export function PublicHome() {
           <Link href="/register">
             入会申請をはじめる <ArrowUpRight size={24} />
           </Link>
-          <span>TOWARI</span>
+          <span>TONARI</span>
         </section>
       </main>
       <footer className="lp-footer">
@@ -263,7 +263,7 @@ export function PublicHome() {
             会員ログイン <ArrowUpRight size={13} />
           </Link>
           <a href="#journey">出会いのかたち</a>
-          <small>© TOWARI</small>
+          <small>© TONARI</small>
         </div>
         <p className="lp-prototype">
           現在は試作版です。正式な本人・独身確認は行いません。実際の証明書は送信しないでください。

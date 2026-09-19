@@ -768,9 +768,9 @@ export function createEngine(seed = false) {
   return api;
 }
 const globalEngine = globalThis as typeof globalThis & {
-  towariEngine?: ReturnType<typeof createEngine>;
+  tonariEngine?: ReturnType<typeof createEngine>;
 };
 export const engine =
-  globalEngine.towariEngine ??
-  createEngine(process.env.TOWARI_DEMO_ENABLED === "true");
-globalEngine.towariEngine = engine;
+  globalEngine.tonariEngine ??
+  createEngine(process.env.TONARI_DEMO_ENABLED === "true");
+globalEngine.tonariEngine = engine;

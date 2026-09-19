@@ -2,7 +2,7 @@ import { expect, test } from "@playwright/test";
 
 test("入会前はサービス案内だけを表示する", async ({ page }) => {
   await page.goto("/");
-  await expect(page).toHaveTitle(/TOWARI/);
+  await expect(page).toHaveTitle(/TONARI/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
     "かけがえのない日々に。",
   );

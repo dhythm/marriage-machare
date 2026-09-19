@@ -140,7 +140,7 @@ export function StaffPanel({ state }: { state: StaffState }) {
     <div className="tw staff-page">
       <header className="public-header">
         <Link href="/" className="wordmark">
-          TOWARI<span>運営管理</span>
+          TONARI<span>運営管理</span>
         </Link>
         <button
           type="button"

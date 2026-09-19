@@ -4,9 +4,9 @@ import { join } from "node:path";
 import sharp from "sharp";
 import { engine } from "@/lib/engine";
 
-const shared = globalThis as unknown as { towariPhotos?: Map<string, Buffer> };
-shared.towariPhotos ??= new Map<string, Buffer>();
-const photoStore = shared.towariPhotos;
+const shared = globalThis as unknown as { tonariPhotos?: Map<string, Buffer> };
+shared.tonariPhotos ??= new Map<string, Buffer>();
+const photoStore = shared.tonariPhotos;
 export async function storePhoto(id: string, file: File) {
   const state = engine.snapshot(id);
   if (["withdrawn", "suspended", "rejected"].includes(state.account.status))
