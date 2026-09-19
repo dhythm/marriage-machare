@@ -5,15 +5,16 @@ import { auth } from "@/lib/auth";
 import { engine } from "@/lib/engine";
 export const SESSION_COOKIE = "tonari_session_v2";
 export function prepareDemo() {
+  if (process.env.TONARI_DEMO_ENABLED !== "true") return;
   const secret = process.env.TONARI_DEMO_PASSWORD;
-  if (
-    process.env.TONARI_DEMO_ENABLED === "true" &&
-    secret &&
-    secret.length >= 12
-  ) {
-    for (const account of engine.seedAccounts())
-      auth.seed(account.email, secret, account.id);
+  if (!secret || secret.length < 8) {
+    console.warn(
+      "TONARI_DEMO_PASSWORD は8文字以上で設定してください。デモ会員は登録されません。",
+    );
+    return;
   }
+  for (const account of engine.seedAccounts())
+    auth.seed(account.email, secret, account.id);
 }
 export async function getSession() {
   const token = (await cookies()).get(SESSION_COOKIE)?.value;

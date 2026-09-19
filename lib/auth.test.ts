@@ -41,6 +41,14 @@ describe("credentials and session isolation", () => {
     );
   });
 });
+it("accepts passwords of 8 characters and rejects shorter ones", () => {
+  const auth = createAuth();
+  expect(() => auth.register("a@example.test", "1234567")).toThrow();
+  const id = auth.register("a@example.test", "12345678");
+  expect(auth.login("a@example.test", "12345678")).toBe(id);
+  expect(() => auth.staffLogin("12345678", "1234567")).toThrow();
+  expect(auth.staffLogin("12345678", "12345678")).toBeTruthy();
+});
 it("staff authentication never grants role with absent or wrong configuration", () => {
   const auth = createAuth();
   expect(() => auth.staffLogin("any")).toThrow();

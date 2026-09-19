@@ -102,12 +102,12 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "staff" }) {
               name="password"
               type="password"
               required
-              minLength={mode === "register" ? 12 : 1}
+              minLength={mode === "register" ? 8 : 1}
               autoComplete={
                 mode === "register" ? "new-password" : "current-password"
               }
               placeholder={
-                mode === "register" ? "12文字以上" : "パスワードを入力"
+                mode === "register" ? "8文字以上" : "パスワードを入力"
               }
             />
           </label>

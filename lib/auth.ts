@@ -15,7 +15,7 @@ const emailSchema = z
   .max(254);
 const passwordSchema = z
   .string()
-  .min(12, "パスワードは12文字以上で入力してください")
+  .min(8, "パスワードは8文字以上で入力してください")
   .max(128, "パスワードは128文字以内です");
 type Credential = { id: string; salt: string; hash: Buffer };
 type Session = {
@@ -97,7 +97,7 @@ export function createAuth(now: () => number = Date.now) {
   }
   function staffLogin(password: unknown, configured?: string) {
     limit("staff-login", 8);
-    if (!configured || configured.length < 16)
+    if (!configured || configured.length < 8)
       throw new Error(
         "運営ログインが未設定です。管理者にお問い合わせください。",
       );
