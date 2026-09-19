@@ -37,7 +37,9 @@ TOWARI_DEMO_ENABLED=true
 TOWARI_DEMO_PASSWORD=自分で決めた12文字以上のパスワード
 ```
 
-承認済みの架空会員12名が用意されます。女性は `member-m1@example.test` ～ `member-m6@example.test`、男性は `member-m7@example.test` ～ `member-m12@example.test`。共通パスワードは上記設定値です。初期状態では紹介未取得です。
+承認済みの架空会員12名が用意されます。女性は `member-m1@example.test` ～ `member-m6@example.test`、男性は `member-m7@example.test` ～ `member-m12@example.test`。共通パスワードは上記設定値です。
+
+`member-m1`（美咲）と `member-m7`（拓海）は、ログイン時点でご縁が成立しています。相手の写真が公開された状態と、面談希望の送信・ご縁の終了を確認できます。紹介の流れを最初から試すには `member-m2` ～ `member-m6` / `member-m8` ～ `member-m12` を使ってください。それ以外の会員は、初期状態では紹介未取得です。
 
 双方の操作は別ブラウザーでログインするか、プロフィールからログアウトして交互に確認してください。デモを無効にすると新規登録からの導線のみになります。実在する会員はいません。写真はAI生成画像です。
 

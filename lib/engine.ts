@@ -713,7 +713,7 @@ export function createEngine(seed = false) {
       return account(id).photoKey;
     },
   };
-  if (seed)
+  if (seed) {
     for (const member of members) {
       api.register(member.id, `member-${member.id}@example.test`);
       const a = account(member.id);
@@ -757,6 +757,14 @@ export function createEngine(seed = false) {
       a.hasPhoto = true;
       a.photoKey = required(member.photo.split("/").at(-1));
     }
+    api.generateIntroductions("m1");
+    api.generateIntroductions("m7");
+    api.interest("m1", "m7");
+    const seeded = [...requestStore.values()].find(
+      (r) => r.from === "m1" && r.to === "m7" && r.state === "pending",
+    );
+    if (seeded) api.respondInterest("m7", seeded.id, true);
+  }
   return api;
 }
 const globalEngine = globalThis as typeof globalThis & {

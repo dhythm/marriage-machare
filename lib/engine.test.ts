@@ -288,6 +288,29 @@ describe("consultation access and matching", () => {
   });
 });
 
+describe("demo seed", () => {
+  it("starts m1 and m7 in an established relationship while other demo accounts stay free", () => {
+    const demo = createEngine(true);
+    const woman = demo.snapshot("m1");
+    expect(woman.account.relationshipLocked).toBe(true);
+    expect(woman.relationship?.partner.id).toBe("m7");
+    expect(woman.relationship?.partner.name).toBe("拓海");
+    expect(woman.relationship?.photoUrl).toBe("/api/portraits/m7");
+    const man = demo.snapshot("m7");
+    expect(man.account.relationshipLocked).toBe(true);
+    expect(man.relationship?.partner.id).toBe("m1");
+    expect(man.relationship?.partner.name).toBe("美咲");
+    expect(man.relationship?.photoUrl).toBe("/api/portraits/m1");
+    expect(demo.photoAccess("m1", "m7")).toBe(true);
+    expect(demo.photoAccess("m2", "m7")).toBe(false);
+    expect(demo.snapshot("m2").relationship).toBe(null);
+    expect(demo.snapshot("m8").relationship).toBe(null);
+    demo.generateIntroductions("m2");
+    expect(demo.snapshot("m2").introductions.length).toBeGreaterThan(0);
+    expect(() => demo.generateIntroductions("m1")).toThrow();
+  });
+});
+
 it("shares the private preference note only with its author and staff", () => {
   store.savePreference(
     "a",
