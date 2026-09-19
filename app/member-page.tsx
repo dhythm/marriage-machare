@@ -1,17 +1,10 @@
-import { partnersFor, resolveView } from "@/lib/view";
-import Dashboard, { type Tab } from "./dashboard";
-
-export type SearchParams = Promise<{ view?: string | string[] }>;
-
+import { engine, requireMemberPage } from "@/lib/server/runtime";
+import { Portal } from "./components/portal";
 export default async function MemberPage({
-  tab,
-  searchParams,
+  section = "home",
 }: {
-  tab: Tab;
-  searchParams: SearchParams;
+  section?: string;
 }) {
-  const view = resolveView((await searchParams).view);
-  return (
-    <Dashboard key={view} tab={tab} view={view} members={partnersFor(view)} />
-  );
+  const id = await requireMemberPage();
+  return <Portal state={engine.snapshot(id)} section={section} />;
 }

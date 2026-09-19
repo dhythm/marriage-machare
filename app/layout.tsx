@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css";
-import "./rose-theme.css";
+import "./experience.css";
 export const metadata: Metadata = {
   title: {
     default: "TOWARI — この先を、ともにする人と。",

@@ -182,11 +182,3 @@ export const members: Member[] = [
     hobbies: ["ハイキング", "映画", "料理"],
   },
 ];
-export const valueOptions = [
-  "何気ない日常を大切に",
-  "お互いを尊重したい",
-  "家族との時間",
-  "穏やかな暮らし",
-  "一緒に新しい体験を",
-  "対話を大切に",
-];

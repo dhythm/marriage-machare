@@ -17,6 +17,6 @@ export default defineConfig({
   webServer: {
     command: `pnpm exec next start --port ${port}`,
     url: `http://localhost:${port}`,
-    reuseExistingServer: !isCI,
+    reuseExistingServer: false,
   },
 });
