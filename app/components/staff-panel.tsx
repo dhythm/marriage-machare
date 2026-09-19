@@ -137,7 +137,7 @@ export function StaffPanel({ state }: { state: StaffState }) {
     }
   }
   return (
-    <div className="tw staff-page">
+    <div className="tw theme-sky staff-page">
       <header className="public-header">
         <Link href="/" className="wordmark">
           TONARI<span>運営管理</span>

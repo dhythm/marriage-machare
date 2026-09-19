@@ -14,7 +14,7 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "staff" }) {
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
   return (
-    <main className="tw auth-page">
+    <main className="tw theme-sky auth-page">
       <Link href="/" className="wordmark auth-brand">
         TONARI
       </Link>

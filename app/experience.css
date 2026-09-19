@@ -80,6 +80,22 @@ img {
   --ink: #303d35;
   color: var(--ink);
 }
+.tw.theme-sky,
+.tw.theme-sky .modal {
+  --accent: #476c87;
+  --accent-dark: #2c4659;
+  --tint: #e3f0f8;
+  --soft: #f5f9fc;
+  --border: #cbdce7;
+  --muted: #526c80;
+  --ink: #2c4659;
+}
+.tw.theme-sky {
+  background: var(--soft);
+}
+.tw.theme-sky :is(button, a, input, select, textarea):focus-visible {
+  outline-color: var(--accent);
+}
 .tw.theme-rose {
   --accent: #96666e;
   --accent-dark: #78444f;
@@ -1197,13 +1213,13 @@ img {
   z-index: 1;
 }
 .auth-story {
-  background: #e9eddf;
+  background: var(--tint);
   display: flex;
   justify-content: center;
   align-items: flex-start;
   flex-direction: column;
   padding: 160px 14% 100px;
-  color: #526c58;
+  color: var(--accent);
   position: relative;
   overflow: hidden;
 }
@@ -1213,12 +1229,12 @@ img {
   width: 550px;
   height: 550px;
   border-radius: 50%;
-  border: 1px solid #526c5820;
+  border: 1px solid #476c8720;
   left: -140px;
   bottom: -250px;
   box-shadow:
-    0 0 0 35px #526c5808,
-    0 0 0 70px #526c5808;
+    0 0 0 35px #476c8708,
+    0 0 0 70px #476c8708;
 }
 .auth-story > svg {
   margin-bottom: 36px;

@@ -571,7 +571,7 @@ export function Portal({
     );
   return (
     <div
-      className={`tw member-page ${account.theme === "rose" ? "theme-rose" : ""}`}
+      className={`tw member-page ${!account.profile ? "theme-sky" : account.theme === "rose" ? "theme-rose" : ""}`}
     >
       <aside className="sidebar">
         <Link href="/" className="wordmark">
