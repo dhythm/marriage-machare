@@ -7,9 +7,16 @@ import {
   loginAccount,
   registerAccount,
   staffLogin,
+  switchDemoUser,
 } from "../consultation-actions";
 
-export function AuthForm({ mode }: { mode: "login" | "register" | "staff" }) {
+export function AuthForm({
+  mode,
+  demoMembers,
+}: {
+  mode: "login" | "register" | "staff";
+  demoMembers?: { id: string; name: string; gender: "woman" | "man" }[];
+}) {
   const router = useRouter();
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
@@ -132,6 +139,45 @@ export function AuthForm({ mode }: { mode: "login" | "register" | "staff" }) {
               {mode === "register" ? "ログイン" : "入会申請へ"}{" "}
               <ArrowRight size={14} />
             </Link>
+          </div>
+        )}
+        {mode === "login" && demoMembers && demoMembers.length > 0 && (
+          <div className="demo-members">
+            <span className="eyebrow">DEMO MEMBERS</span>
+            <p>デモ会員として、そのまま体験できます。</p>
+            <div className="demo-member-list">
+              {demoMembers.map((member) => (
+                <button
+                  type="button"
+                  key={member.id}
+                  disabled={busy}
+                  onClick={async () => {
+                    setError("");
+                    setBusy(true);
+                    try {
+                      const result = await switchDemoUser(member.id);
+                      if (!result.ok) {
+                        setError(result.error);
+                        return;
+                      }
+                      router.push("/home");
+                      router.refresh();
+                    } catch {
+                      setError(
+                        "処理できませんでした。もう一度お試しください。",
+                      );
+                    } finally {
+                      setBusy(false);
+                    }
+                  }}
+                >
+                  {member.name}
+                  <small>
+                    {member.gender === "woman" ? "女性デモ" : "男性デモ"}
+                  </small>
+                </button>
+              ))}
+            </div>
           </div>
         )}
         <div className="auth-note">

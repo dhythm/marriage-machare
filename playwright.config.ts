@@ -18,5 +18,10 @@ export default defineConfig({
     command: `pnpm exec next start --port ${port}`,
     url: `http://localhost:${port}`,
     reuseExistingServer: false,
+    env: {
+      TONARI_ADMIN_PASSWORD: "admin-1234",
+      TONARI_DEMO_ENABLED: "true",
+      TONARI_DEMO_PASSWORD: "demo-1234",
+    },
   },
 });

@@ -142,9 +142,11 @@ function Modal({
 export function Portal({
   state,
   section = "home",
+  demoMembers,
 }: {
   state: MemberState;
   section?: string;
+  demoMembers?: { id: string; name: string; gender: "woman" | "man" }[];
 }) {
   const router = useRouter();
   const [error, setError] = useState("");
@@ -612,6 +614,24 @@ export function Portal({
             <br />
             でも、一歩ずつ。
           </p>
+          {state.isDemo && demoMembers && demoMembers.length > 1 && (
+            <label className="demo-switch">
+              デモ会員
+              <select
+                value={account.id}
+                disabled={busy}
+                onChange={(event) =>
+                  run(() => action.switchDemoUser(event.target.value))
+                }
+              >
+                {demoMembers.map((member) => (
+                  <option key={member.id} value={member.id}>
+                    {member.name}
+                  </option>
+                ))}
+              </select>
+            </label>
+          )}
           <button
             type="button"
             onClick={() => run(action.logoutAccount, undefined, "/")}

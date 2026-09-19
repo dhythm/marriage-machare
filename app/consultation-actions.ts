@@ -5,7 +5,9 @@ import { z } from "zod";
 import type { ActionResult } from "@/lib/contracts";
 import { removePhoto, storePhoto } from "@/lib/server/photos";
 import {
+  assumeDemoMember,
   auth,
+  DEMO_COOKIE,
   engine,
   memberId,
   prepareDemo,
@@ -74,7 +76,11 @@ export async function logoutAccount() {
     const jar = await cookies();
     auth.revoke(jar.get(SESSION_COOKIE)?.value);
     jar.delete(SESSION_COOKIE);
+    jar.delete(DEMO_COOKIE);
   });
+}
+export async function switchDemoUser(id: string) {
+  return handle(async () => assumeDemoMember(z.string().parse(id)));
 }
 export async function submitApplication(input: unknown) {
   return handle(async () => engine.submitApplication(await memberId(), input));
@@ -138,7 +144,9 @@ export async function withdrawAccount() {
     engine.withdraw(id);
     removePhoto(id);
     auth.revokeAccount(id);
-    (await cookies()).delete(SESSION_COOKIE);
+    const jar = await cookies();
+    jar.delete(SESSION_COOKIE);
+    jar.delete(DEMO_COOKIE);
   });
 }
 export async function uploadPhoto(formData: FormData) {

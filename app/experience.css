@@ -1302,6 +1302,50 @@ img {
   display: block;
   margin-top: 20px;
 }
+.demo-members {
+  border-top: 1px solid var(--border);
+  padding-top: 22px;
+  margin-bottom: 25px;
+}
+.demo-members > p {
+  font-size: 11px;
+  color: var(--muted);
+  margin: 8px 0 14px;
+}
+.demo-member-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+.demo-member-list button {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 3px;
+  padding: 10px 13px;
+  font-size: 12px;
+  font-weight: 600;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  text-align: left;
+}
+.demo-member-list button small {
+  font-size: 9px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.demo-switch {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-bottom: 14px;
+}
+.demo-switch select {
+  width: 100%;
+  margin-top: 5px;
+  font-size: 11px;
+  padding: 8px 10px;
+}
 .staff-main {
   max-width: 1050px;
   padding: 45px 30px 80px;
