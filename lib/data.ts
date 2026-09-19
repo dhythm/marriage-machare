@@ -104,7 +104,7 @@ export const members: Member[] = [
     age: 32,
     location: "東京都",
     job: "IT・エンジニア",
-    photo: "/portraits/takumi.png",
+    photo: "/portraits/member-7-v2.png",
     values: ["何気ない日常を大切に", "お互いを尊重したい"],
     intro: "何でも話せる、いちばんの味方に。",
     story:
@@ -118,7 +118,7 @@ export const members: Member[] = [
     age: 34,
     location: "神奈川県",
     job: "建築・設計",
-    photo: "/portraits/naoki.png",
+    photo: "/portraits/member-8-v2.png",
     values: ["家族との時間", "穏やかな暮らし"],
     intro: "帰るのが楽しみになる、ふたりの家を。",
     story:
@@ -132,7 +132,7 @@ export const members: Member[] = [
     age: 30,
     location: "東京都",
     job: "企画・マーケティング",
-    photo: "/portraits/yuto.png",
+    photo: "/portraits/member-9-v2.png",
     values: ["一緒に新しい体験を", "対話を大切に"],
     intro: "同じ景色を見て、違う感想を楽しもう。",
     story:
@@ -146,7 +146,7 @@ export const members: Member[] = [
     age: 33,
     location: "千葉県",
     job: "教育・研究",
-    photo: "/portraits/kenta.png",
+    photo: "/portraits/member-10-v2.png",
     values: ["お互いを尊重したい", "家族との時間"],
     intro: "お互いの「好き」を、大切にできる人と。",
     story:
@@ -160,7 +160,7 @@ export const members: Member[] = [
     age: 35,
     location: "埼玉県",
     job: "プロダクトデザイン",
-    photo: "/portraits/ryosuke.png",
+    photo: "/portraits/member-11-v2.png",
     values: ["穏やかな暮らし", "対話を大切に"],
     intro: "肩の力を抜いて、ずっと隣に。",
     story:
@@ -174,7 +174,7 @@ export const members: Member[] = [
     age: 29,
     location: "東京都",
     job: "医療・リハビリ",
-    photo: "/portraits/sota.png",
+    photo: "/portraits/member-12-v2.png",
     values: ["何気ない日常を大切に", "一緒に新しい体験を"],
     intro: "うれしいことを、最初に伝えたい人に。",
     story:
