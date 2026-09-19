@@ -4,7 +4,7 @@ test("入会前はサービス案内だけを表示する", async ({ page }) => 
   await page.goto("/");
   await expect(page).toHaveTitle(/TOWARI/);
   await expect(page.getByRole("heading", { level: 1 })).toContainText(
-    "ともに生きる人と",
+    "かけがえのない日々に。",
   );
   await expect(page.locator('img[src*="portraits"]')).toHaveCount(0);
   await expect(

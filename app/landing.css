@@ -1,0 +1,755 @@
+.lp {
+  --lp-paper: #f5f3ec;
+  --lp-ink: #283d32;
+  --lp-line: #d4d8ce;
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+}
+.lp h1,
+.lp h2,
+.lp h3 {
+  letter-spacing: 0.015em;
+}
+.lp a {
+  transition:
+    opacity 0.2s,
+    background 0.2s;
+}
+.lp a:hover {
+  opacity: 0.78;
+}
+.lp-skip {
+  position: fixed;
+  top: -80px;
+  left: 20px;
+  padding: 15px;
+  background: white;
+  z-index: 20;
+}
+.lp-skip:focus {
+  top: 10px;
+}
+.lp-header {
+  height: 108px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 4.5%;
+  gap: 24px;
+}
+.lp-logo {
+  font-size: 34px;
+  letter-spacing: 5px;
+  font-weight: 800;
+  line-height: 1;
+}
+.lp-logo span {
+  display: block;
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  margin-top: 12px;
+  font-weight: 700;
+}
+.lp-header nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+  font-size: 12px;
+  font-weight: 700;
+}
+.lp-nav-entry {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  border-bottom: 1px solid var(--lp-ink);
+  padding: 14px 0;
+}
+.lp-hero {
+  position: relative;
+  min-height: 630px;
+  height: min(760px, 78vw);
+  color: #fffefa;
+  isolation: isolate;
+}
+.lp-hero-media {
+  position: absolute;
+  inset: 0;
+  z-index: -2;
+}
+.lp-hero-image {
+  object-fit: cover;
+  object-position: 55% 53%;
+  z-index: -2;
+}
+.lp-hero-shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    rgba(15, 29, 20, 0.47),
+    rgba(15, 29, 20, 0.14) 53%,
+    transparent 80%
+  );
+  z-index: -1;
+}
+.lp-hero-copy {
+  padding: clamp(95px, 11vw, 175px) 6.5% 130px;
+}
+.lp-hero-kicker {
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  margin-bottom: 30px;
+  font-weight: 700;
+}
+.lp-hero h1 {
+  font-size: clamp(40px, 4.3vw, 68px);
+  font-weight: 800;
+  line-height: 1.7;
+  letter-spacing: 0.06em;
+  margin-bottom: 30px;
+  text-shadow: 0 2px 18px #1424191a;
+}
+.lp-hero-line {
+  font-size: 15px;
+  line-height: 2.2;
+  letter-spacing: 0.12em;
+  margin: 0;
+}
+.lp-scroll {
+  position: absolute;
+  bottom: 34px;
+  left: 4.5%;
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  letter-spacing: 0.08em;
+}
+.lp-hero-entry {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  width: 385px;
+  padding: 28px 36px;
+  background: var(--lp-paper);
+  color: var(--lp-ink);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  font-size: 17px;
+  font-weight: 800;
+}
+.lp-hero-entry small {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  margin-bottom: 9px;
+  font-weight: 500;
+}
+.lp-photo-caption {
+  padding: 16px 4.5%;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  color: #697466;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+.lp-story {
+  max-width: 1320px;
+  margin: auto;
+  padding: 130px 6% 150px;
+  display: grid;
+  grid-template-columns: 0.95fr 1fr;
+  gap: 13%;
+  align-items: center;
+}
+.lp-story-image-wrap {
+  position: relative;
+}
+.lp-story-image {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+}
+.lp-image-note {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  display: block;
+  margin-top: 20px;
+}
+.lp-section-label {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  margin-bottom: 29px;
+}
+.lp-story h2 {
+  font-size: clamp(30px, 3.3vw, 45px);
+  line-height: 1.8;
+  margin-bottom: 37px;
+}
+.lp-story-copy > p:not(.lp-section-label) {
+  font-size: 14px;
+  line-height: 2.5;
+  letter-spacing: 0.055em;
+  margin-bottom: 22px;
+}
+.lp-story-sign {
+  display: block;
+  margin-top: 42px;
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: 0.2em;
+}
+.lp-values {
+  background: #2e4538;
+  color: #f5f3e7;
+  padding: 100px max(7%, calc((100vw - 1150px) / 2));
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 12%;
+}
+.lp-values h2 {
+  font-size: clamp(28px, 3vw, 42px);
+  line-height: 1.85;
+  margin-bottom: 28px;
+}
+.lp-values-heading > p:not(.lp-section-label) {
+  font-size: 13px;
+  line-height: 2.4;
+  color: #d3dccf;
+  margin-bottom: 33px;
+}
+.lp-light-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 36px;
+  padding: 15px 0;
+  border-bottom: 1px solid #8a9b89;
+  font-size: 12px;
+}
+.lp-value-notes {
+  padding-top: 6px;
+}
+.lp-value-notes > p {
+  position: relative;
+  font-size: 20px;
+  line-height: 1.95;
+  letter-spacing: 0.04em;
+  font-weight: 600;
+  padding: 0 0 28px 40px;
+  border-bottom: 1px solid #687a66;
+  margin-bottom: 28px;
+}
+.lp-value-notes > p > span {
+  position: absolute;
+  left: 0;
+  top: 6px;
+  font-size: 10px;
+  color: #becbb6;
+  letter-spacing: 1px;
+}
+.lp-value-notes small {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #c3cdbc;
+}
+.lp-journey {
+  max-width: 1280px;
+  margin: auto;
+  padding: 135px 6%;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 8%;
+}
+.lp-journey h2 {
+  font-size: 38px;
+  line-height: 1.8;
+  margin-bottom: 20px;
+}
+.lp-journey-heading > p:last-child {
+  font-size: 12px;
+  color: #677460;
+}
+.lp-steps {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.lp-steps li {
+  display: flex;
+  gap: 28px;
+  padding: 30px 0;
+  border-top: 1px solid var(--lp-line);
+}
+.lp-steps li:last-child {
+  border-bottom: 1px solid var(--lp-line);
+}
+.lp-step-number {
+  font-size: 29px;
+  font-weight: 500;
+  font-family: Georgia, serif;
+  line-height: 1.5;
+  color: #6d7d63;
+}
+.lp-steps h3 {
+  font-size: 19px;
+  line-height: 1.7;
+  margin-bottom: 13px;
+}
+.lp-steps p {
+  font-size: 12px;
+  line-height: 2.1;
+  color: #626e5d;
+  margin: 0;
+}
+.lp-faq {
+  border-top: 1px solid var(--lp-line);
+  max-width: 1125px;
+  margin: 0 auto;
+  padding: 65px 0 100px;
+  display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 8%;
+}
+.lp-faq h2 {
+  font-size: 30px;
+}
+.lp-questions details {
+  border-bottom: 1px solid var(--lp-line);
+}
+.lp-questions summary {
+  list-style: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 25px 0;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.8;
+}
+.lp-questions summary::-webkit-details-marker {
+  display: none;
+}
+.lp-questions summary > span {
+  position: relative;
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+.lp-questions summary > span::before,
+.lp-questions summary > span::after {
+  content: "";
+  position: absolute;
+  background: var(--lp-ink);
+  top: 6px;
+  left: 0;
+  width: 13px;
+  height: 1px;
+}
+.lp-questions summary > span::after {
+  transform: rotate(90deg);
+  transition: transform 0.2s;
+}
+.lp-questions details[open] summary > span::after {
+  transform: rotate(0);
+}
+.lp-questions details p {
+  font-size: 12px;
+  line-height: 2.2;
+  color: #626e5d;
+  padding: 0 30px 15px 0;
+}
+.lp-invitation {
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+  background: #e4e8dc;
+  padding: 85px 24px 0;
+}
+.lp-invitation > p {
+  font-size: 12px;
+  letter-spacing: 0.13em;
+}
+.lp-invitation h2 {
+  font-size: clamp(30px, 3.8vw, 54px);
+  margin: 28px 0 35px;
+  line-height: 1.7;
+}
+.lp-invitation > a {
+  display: inline-flex;
+  background: var(--lp-ink);
+  color: #faf8ef;
+  padding: 23px 34px;
+  min-width: 295px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 50px;
+  font-size: 14px;
+  font-weight: 700;
+}
+.lp-invitation > span {
+  display: block;
+  font-size: clamp(90px, 21.5vw, 350px);
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  line-height: 0.86;
+  color: #bdc9b4;
+  margin-top: 85px;
+  margin-bottom: -0.075em;
+  user-select: none;
+}
+.lp-footer {
+  padding: 35px 4.5% 25px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 24px;
+  background: #e4e8dc;
+  font-size: 10px;
+}
+.lp-footer > p {
+  margin: 0;
+  letter-spacing: 0.08em;
+}
+.lp-footer > div {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+}
+.lp-footer a {
+  display: inline-flex;
+  gap: 7px;
+  align-items: center;
+}
+.lp-footer .lp-prototype {
+  flex-basis: 100%;
+  font-size: 9px;
+  color: #687362;
+  padding-top: 20px;
+  border-top: 1px solid #c8d0bf;
+}
+.lp-mobile-break {
+  display: none;
+}
+@media (min-width: 1600px) {
+  .lp-hero {
+    height: 800px;
+  }
+  .lp-hero-copy {
+    padding-top: 180px;
+  }
+}
+@media (max-width: 1100px) {
+  .lp-header nav {
+    gap: 20px;
+  }
+  .lp-faq {
+    margin: 0 6%;
+  }
+  .lp-story {
+    gap: 8%;
+    padding: 95px 6%;
+  }
+  .lp-hero h1 {
+    font-size: 45px;
+  }
+  .lp-values {
+    gap: 7%;
+  }
+  .lp-values h2 {
+    font-size: 31px;
+  }
+  .lp-value-notes > p {
+    font-size: 18px;
+  }
+  .lp-journey {
+    gap: 5%;
+    padding: 95px 6%;
+  }
+  .lp-journey h2 {
+    font-size: 31px;
+  }
+  .lp-steps h3 {
+    font-size: 17px;
+  }
+}
+@media (max-width: 700px) {
+  .lp-header {
+    height: 86px;
+    padding: 0 6%;
+    gap: 16px;
+  }
+  .lp-logo {
+    font-size: 27px;
+    letter-spacing: 3px;
+  }
+  .lp-logo span {
+    font-size: 7px;
+    letter-spacing: 0.03em;
+    margin-top: 8px;
+  }
+  .lp-header nav {
+    gap: 18px;
+    font-size: 10px;
+  }
+  .lp-nav-story {
+    display: none;
+  }
+  .lp-nav-entry {
+    gap: 9px;
+    padding: 10px 0;
+  }
+  .lp-nav-entry svg {
+    width: 14px;
+  }
+  .lp-hero {
+    height: 760px;
+    min-height: 0;
+    max-height: calc(100svh - 30px);
+  }
+  .lp-hero-image {
+    object-position: 64% center;
+  }
+  .lp-hero-shade {
+    background: linear-gradient(
+      0deg,
+      rgba(12, 29, 18, 0.72),
+      rgba(12, 29, 18, 0.04) 80%
+    );
+  }
+  .lp-hero-copy {
+    position: absolute;
+    bottom: 150px;
+    padding: 0 7%;
+  }
+  .lp-hero-kicker {
+    font-size: 10px;
+    letter-spacing: 0.06em;
+    margin-bottom: 21px;
+  }
+  .lp-hero h1 {
+    font-size: clamp(27px, 7.5vw, 43px);
+    line-height: 1.8;
+    letter-spacing: 0.03em;
+    margin-bottom: 20px;
+  }
+  .lp-hero-line {
+    font-size: 12px;
+    line-height: 2;
+  }
+  .lp-mobile-break {
+    display: block;
+  }
+  .lp-hero-entry {
+    width: 88%;
+    padding: 23px 26px;
+    font-size: 15px;
+  }
+  .lp-hero-entry small {
+    font-size: 9px;
+  }
+  .lp-scroll {
+    display: none;
+  }
+  .lp-photo-caption {
+    padding: 14px 6%;
+    display: block;
+  }
+  .lp-photo-caption > span:first-child {
+    display: none;
+  }
+  .lp-photo-caption > span {
+    font-size: 8px;
+  }
+  .lp-story {
+    padding: 65px 7% 75px;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 44px;
+  }
+  .lp-story-image-wrap {
+    width: 82%;
+    align-self: flex-start;
+  }
+  .lp-story-image {
+    aspect-ratio: 4 / 5;
+  }
+  .lp-image-note {
+    font-size: 9px;
+    margin-top: 14px;
+  }
+  .lp-story-copy {
+    padding-left: 9%;
+  }
+  .lp-section-label {
+    font-size: 10px;
+    margin-bottom: 22px;
+  }
+  .lp-story h2 {
+    font-size: 30px;
+    line-height: 1.8;
+    margin-bottom: 28px;
+  }
+  .lp-story-copy > p:not(.lp-section-label) {
+    font-size: 12px;
+    line-height: 2.35;
+    margin-bottom: 23px;
+  }
+  .lp-story-sign {
+    font-size: 15px;
+    margin-top: 32px;
+  }
+  .lp-desktop-break {
+    display: none;
+  }
+  .lp-values {
+    display: block;
+    padding: 62px 8%;
+  }
+  .lp-values h2 {
+    font-size: 27px;
+    line-height: 1.8;
+  }
+  .lp-values-heading > p:not(.lp-section-label) {
+    font-size: 12px;
+  }
+  .lp-light-link {
+    gap: 23px;
+    font-size: 11px;
+  }
+  .lp-value-notes {
+    margin-top: 55px;
+  }
+  .lp-value-notes > p {
+    font-size: 18px;
+    padding-left: 32px;
+  }
+  .lp-journey {
+    display: block;
+    padding: 72px 8% 55px;
+  }
+  .lp-journey h2 {
+    font-size: 30px;
+    line-height: 1.8;
+  }
+  .lp-steps {
+    margin-top: 40px;
+  }
+  .lp-steps li {
+    gap: 20px;
+    padding: 27px 0;
+  }
+  .lp-step-number {
+    font-size: 25px;
+  }
+  .lp-steps h3 {
+    font-size: 16px;
+  }
+  .lp-steps p {
+    font-size: 12px;
+  }
+  .lp-faq {
+    display: block;
+    margin: 0 8%;
+    padding: 45px 0 65px;
+  }
+  .lp-faq h2 {
+    font-size: 28px;
+    margin-bottom: 20px;
+  }
+  .lp-questions summary {
+    font-size: 12px;
+    gap: 15px;
+    padding: 23px 0;
+  }
+  .lp-invitation {
+    padding: 60px 6% 0;
+  }
+  .lp-invitation > p {
+    font-size: 10px;
+  }
+  .lp-invitation h2 {
+    font-size: 29px;
+    margin: 25px 0 30px;
+  }
+  .lp-invitation > a {
+    min-width: 0;
+    width: 100%;
+    max-width: 320px;
+    font-size: 13px;
+    padding: 21px 28px;
+  }
+  .lp-invitation > span {
+    font-size: 21vw;
+    letter-spacing: 0.02em;
+    margin-top: 65px;
+  }
+  .lp-footer {
+    padding: 30px 6% 24px;
+    gap: 20px;
+  }
+  .lp-footer > div {
+    width: 100%;
+    gap: 20px;
+    font-size: 9px;
+  }
+  .lp-footer small {
+    margin-left: auto;
+  }
+  .lp-footer .lp-prototype {
+    font-size: 8px;
+    line-height: 1.9;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lp a,
+  .lp-questions summary > span::after {
+    transition: none;
+  }
+}
+@media (min-width: 701px) {
+  .lp-hero .lp-mobile-break {
+    display: block;
+  }
+  .lp-hero-copy {
+    padding-top: clamp(90px, 8vw, 130px);
+  }
+}
+@media (max-width: 700px) {
+  .lp-hero {
+    height: auto;
+    max-height: none;
+    background: #2e4538;
+  }
+  .lp-hero-media {
+    height: 330px;
+    bottom: auto;
+    z-index: 0;
+  }
+  .lp-hero-image {
+    object-position: 68% 52%;
+    z-index: 0;
+  }
+  .lp-hero-shade {
+    display: none;
+  }
+  .lp-hero-copy {
+    position: relative;
+    bottom: auto;
+    padding: 367px 7% 38px;
+  }
+  .lp-hero-entry {
+    position: relative;
+    bottom: auto;
+    margin-left: auto;
+  }
+}
