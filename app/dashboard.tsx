@@ -1,32 +1,998 @@
-'use client';
-import Link from 'next/link';
-import { useEffect, useRef, useState, useTransition } from 'react';
-import { ArrowUpRight, ArrowRight, Bell, Check, ChevronDown, Heart, Home, Leaf, LockKeyhole, Menu, MessageCircle, Plus, ShieldCheck, SlidersHorizontal, Sparkles, UserRound, UsersRound, X } from 'lucide-react';
-import { bootstrap, toggleFavorite, applyForMembership, saveMeeting } from './actions';
-import { Member, valueOptions } from '@/lib/data';
-import type { Account } from '@/lib/store';
-type Tab='home'|'discover'|'favorites'|'meetings'|'profile';
-const nav=[{id:'home' as Tab,label:'ホーム',icon:Home},{id:'discover' as Tab,label:'お相手を探す',icon:UsersRound},{id:'favorites' as Tab,label:'お気に入り',icon:Heart},{id:'meetings' as Tab,label:'お見合い',icon:MessageCircle},{id:'profile' as Tab,label:'マイプロフィール',icon:UserRound}];
-export default function Dashboard({members,view}:{members:Member[];view:'men'|'women'}){
-const [tab,setTab]=useState<Tab>('home');const [account,setAccount]=useState<Account|null>(null);const [modal,setModal]=useState<'apply'|'filter'|'notice'|'support'|null>(null);const [selected,setSelected]=useState<Member|null>(null);const [filter,setFilter]=useState('すべて');const [region,setRegion]=useState('すべて');const [toast,setToast]=useState('');const [pending,startTransition]=useTransition();const [mobile,setMobile]=useState(false);const [chosen,setChosen]=useState<string[]>(['何気ない日常を大切に']);const [error,setError]=useState('');const [sort,setSort]=useState('recommended');const dialogRef=useRef<HTMLDialogElement>(null);
-useEffect(()=>{bootstrap().then(setAccount).catch(()=>setToast('接続できませんでした。ページを再読み込みしてください。'));},[]);
-useEffect(()=>{if(!toast)return;const timer=setTimeout(()=>setToast(''),5000);return()=>clearTimeout(timer)},[toast]);
-useEffect(()=>{if(modal||selected)dialogRef.current?.showModal();else dialogRef.current?.close()},[modal,selected]);
-const close=()=>{setModal(null);setSelected(null);setError('')};
-const run=(fn:()=>Promise<void>)=>startTransition(async()=>{try{await fn()}catch{setToast('処理に失敗しました。もう一度お試しください。')}});
-const star=(id:string)=>run(async()=>{setAccount(await toggleFavorite(id))});
-const shown=members.filter(m=>(tab!=='favorites'||account?.favorites.includes(m.id))&&(tab!=='meetings'||account?.requests.includes(m.id))&&(filter==='すべて'||m.values.includes(filter))&&(region==='すべて'||m.location===region));
-if(sort==='age')shown.sort((a,b)=>a.age-b.age);
-const favoriteCount=members.filter(m=>account?.favorites.includes(m.id)).length;
-const navigate=(id:Tab)=>{setTab(id);setFilter('すべて');setRegion('すべて');setMobile(false)};
-return <div className="app-shell">
-<aside className={`sidebar ${mobile?'is-open':''}`}><a className="brand" href={view==='men'?'/?view=men':'/'}>towari<span className="brand-dot">.</span></a><div className="brand-caption">この先を、ともにする人と。</div><div className="sidebar-line"/><div className="workspace-label">MY TOWARI</div><nav>{nav.map(({id,label,icon:Icon})=><button key={id} className={`nav-item ${tab===id?'active':''}`} onClick={()=>navigate(id)}><Icon size={19}/><span>{label}</span>{id==='favorites'&&favoriteCount>0&&<b>{favoriteCount}</b>}{id==='home'&&<span className="active-dot"/>}</button>)}</nav><div className="side-note"><div className="small-emblem"><Leaf size={19}/></div><p>出会いの、その先まで。</p><span>あなたらしい歩幅で、<br/>ふたりの未来を見つけましょう。</span><button onClick={()=>setModal('support')}>TOWARIのサポート <ArrowUpRight size={14}/></button></div><div className="sidebar-bottom"><div className="secure"><ShieldCheck size={16}/> 審査制だから、安心の出会い</div><button className="side-user" onClick={()=>navigate('profile')}><div className="avatar"><UserRound size={20}/></div><div><strong>{account?.name??'ゲスト'} さん</strong><span>{account?.status==='pending'?'入会申請受付済み':'体験アカウント'}</span></div><ChevronDown size={15}/></button></div></aside>
-<div className="main-shell"><header className="topbar"><div className="breadcrumb"><button className="mobile-menu icon-button" aria-label="メニュー" onClick={()=>setMobile(!mobile)}><Menu size={22}/></button><span>MY TOWARI</span><span className="slash">/</span><strong>{nav.find(n=>n.id===tab)?.label}</strong></div><div className="header-actions"><span className="demo-badge">PREVIEW <span>体験版</span></span><button className="icon-button notification" aria-label="お知らせ" onClick={()=>setModal('notice')}><Bell size={19}/><i/></button><button className="avatar small" aria-label="プロフィール" onClick={()=>navigate('profile')}><UserRound size={18}/></button></div></header>
-<main><div className="view-switch-row"><div className="view-context"><UsersRound size={15}/><span>{view==='men'?'女性会員向け · 男性のお相手をご紹介':'男性会員向け · 女性のお相手をご紹介'}</span></div><nav className="view-switch" aria-label="体験する会員画面"><Link href="/" aria-current={view==='women'?'page':undefined}>女性のお相手</Link><Link href="/?view=men" aria-current={view==='men'?'page':undefined}>男性のお相手</Link></nav></div><div className="page-heading"><div><div className="eyebrow">A NEW CHAPTER, TOGETHER</div><h1>{tab==='home'?'心が通う出会いを、ここから。':tab==='discover'?'ふたりの未来を、見つける。':tab==='favorites'?'気になる人を、大切に。':tab==='meetings'?'出会いを、一歩ずつ。':'あなたらしさを、伝えよう。'}</h1><p>{tab==='home'?'条件だけでは見つからない、あなたらしいご縁をお届けします。':tab==='favorites'?'もう少し知りたい。その気持ちから、ご縁は始まります。':tab==='meetings'?'審査完了後に会ってみたいお相手を、ここで確認できます。':tab==='profile'?'大切にしていることが、これからの出会いにつながります。':'大切にしたい価値観から、人生をともにするお相手を。'}</p></div><div className="heading-seal"><ShieldCheck size={15}/> 一つひとつのご縁を、丁寧に。</div></div>
-{tab==='home'&&<><section className="hero"><div className="hero-content"><div className="hero-eyebrow"><span/> MEET YOUR LIFETIME PARTNER</div><h2>何気ない毎日が、<br/>かけがえのない日々になる。</h2><p>好きなことも、大切にしたいことも。<br/>あなたと同じ未来を想う人が、きっといます。</p><button onClick={()=>navigate('discover')}>あなたに合うお相手を見る <ArrowRight size={17}/></button><div className="hero-index"><span>01</span><i/><span>OUR PHILOSOPHY</span></div></div><div className="hero-image" role="img" aria-label="緑に包まれた穏やかな暮らし"><div className="hero-image-label">A life shared.<br/><span>A love that stays.</span></div></div></section><div className="onboarding"><div className="onboarding-icon"><ShieldCheck size={22}/></div><div><strong>{account?.status==='pending'?'入会申請を受け付けました':'安心できる出会いは、お互いを知ることから。'}</strong><p>{account?.status==='pending'?'現在は体験環境のため、実際の本人確認・審査は行われません。':'プロフィールを登録して、あなたの大切にしたい価値観を教えてください。'}</p></div><button onClick={()=>account?.status==='pending'?navigate('profile'):setModal('apply')}>{account?.status==='pending'?'申請内容を見る':'入会申請をはじめる'} <ArrowRight size={16}/></button></div></>}
-{tab==='profile'?<section className="profile-panel"><div className="profile-symbol"><UserRound size={38}/></div><div className="eyebrow">YOUR STORY</div><h2>{account?.name??'ゲスト'} さん</h2><p>{account?.status==='pending'?`${account.age}歳 / ${account.location}`:'あなたの価値観や、思い描く暮らしを教えてください。'}</p><div className="profile-values">{account?.values.map(v=><span className="tag" key={v}>{v}</span>)}</div><div className="review-state"><ShieldCheck size={21}/><div><strong>{account?.status==='pending'?'申請受付済み・審査前':'入会申請前'}</strong><p>体験環境では審査の承認や、実際のお見合いは行いません。</p></div></div>{account?.status!=='pending'&&<button className="primary" onClick={()=>setModal('apply')}>プロフィールを登録する <ArrowRight size={16}/></button>}</section>:<div className="content-grid"><section className="member-section"><div className="section-heading"><div><div className="eyebrow">{tab==='favorites'?'YOUR FAVORITES':tab==='meetings'?'YOUR NEXT STEP':'RECOMMENDED FOR YOU'}</div><h2>{tab==='favorites'?'お気に入りのお相手':tab==='meetings'?'面談を希望したお相手':'価値観からつながる、お相手'} <span>{shown.length}</span></h2></div><button className="filter-button" onClick={()=>setModal('filter')}><SlidersHorizontal size={15}/> 絞り込み{region!=='すべて'&&<i/>}</button></div><div className="filter-row"><div className="chips">{['すべて','何気ない日常を大切に','お互いを尊重したい','家族との時間'].map(v=><button key={v} className={filter===v?'selected':''} onClick={()=>setFilter(v)}>{v==='すべて'&&<Sparkles size={13}/>} {v}</button>)}</div></div><div className="result-line"><span>{tab==='meetings'?'審査完了後のご希望として保存されています':'未来の暮らしを、一緒に思い描ける人。'}</span><select aria-label="並び順" value={sort} onChange={e=>setSort(e.target.value)}><option value="recommended">おすすめ順</option><option value="age">年齢が若い順</option></select></div><div className="member-grid">{shown.map((m,index)=><article className="member-card" key={m.id}><div className="member-photo" onClick={()=>setSelected(m)}><img src={m.photo} alt={`${m.name}さんのイメージ写真`} loading={index<3?'eager':'lazy'}/><span className="photo-badge"><Leaf size={12}/> {m.values.some(v=>account?.values.includes(v))?'大切にしたい価値観が共通':'暮らしの価値観から'}</span><button disabled={pending||!account} className={`favorite ${account?.favorites.includes(m.id)?'saved':''}`} aria-label={`${m.name}さんを${account?.favorites.includes(m.id)?'お気に入りから削除':'お気に入りに追加'}`} aria-pressed={!!account?.favorites.includes(m.id)} onClick={e=>{e.stopPropagation();star(m.id)}}><Heart size={18} fill={account?.favorites.includes(m.id)?'currentColor':'none'}/></button></div><button className="member-info" onClick={()=>setSelected(m)}><div className="name-row"><h3>{m.name}<span>さん</span></h3><span>{m.age}歳 <i/> {m.location}</span></div><div className="occupation">{m.job}<span><ShieldCheck size={12}/> サンプル会員</span></div><p className="member-quote">{m.intro}</p><div className="tags">{m.values.map(v=><span key={v}>{v}</span>)}</div><div className="view-profile">プロフィールを見る <ArrowUpRight size={14}/></div></button></article>)}</div>{shown.length===0&&<div className="empty"><Heart size={30}/><h3>{tab==='favorites'?'気になるお相手を保存しましょう':tab==='meetings'?'面談希望はまだありません':'条件に合うお相手がいません'}</h3><p>{tab==='meetings'?'プロフィールから、審査後の面談希望を登録できます。':'条件を変えたり、ほかのお相手のプロフィールもご覧ください。'}</p><button className="text-button" onClick={()=>navigate('discover')}>お相手を探す <ArrowRight size={16}/></button></div>}<div className="list-footer"><Leaf size={15}/><span>急がず、あなたのペースで。ご縁は、ここから。</span></div></section>
-<aside className="right-column"><section className="journey-card"><div className="eyebrow">YOUR JOURNEY</div><h3>未来につながる、<br/>小さな一歩。</h3><div className="progress-label"><span>ご利用までのステップ</span><strong>{account?.status==='pending'?'2':'1'}<small> / 4</small></strong></div><div className="progress-bar"><i style={{width:account?.status==='pending'?'50%':'25%'}}/></div><ol><li className="done"><span><Check size={12}/></span><div>体験アカウントではじめる</div></li><li className={account?.status==='pending'?'done':'current'}><span>{account?.status==='pending'?<Check size={12}/>:'2'}</span><div>プロフィール・入会申請<small>あなたのことを教えてください</small></div></li><li><span>3</span><div>本人確認・入会審査</div></li><li><span>4</span><div>お相手との出会い</div></li></ol><button onClick={()=>account?.status==='pending'?navigate('profile'):setModal('apply')}>{account?.status==='pending'?'申請内容を確認する':'プロフィールを登録する'} <ArrowRight size={15}/></button></section><section className="values-card"><div className="eyebrow">BEYOND THE PROFILE</div><div className="line-art"><Leaf size={39} strokeWidth={1}/></div><h3>「条件」の先にある、<br/>ふたりの価値観。</h3><p>どんな毎日を送りたいか。<br/>何を大切に、生きていきたいか。<br/>そこから始まる出会いがあります。</p><button onClick={()=>setModal('support')}>TOWARIが大切にすること <ArrowUpRight size={14}/></button></section><div className="privacy-note"><LockKeyhole size={14}/><p>あなたの情報を、大切に。<br/>会員は架空で、人物写真はAI生成です。</p></div></aside></div>}
-<footer><span className="footer-logo">towari.</span><span>この先を、ともにする人と。</span><small>© {new Date().getFullYear()} TOWARI</small></footer></main></div>
-<dialog aria-label={selected ? `${selected.name}さんのプロフィール` : "TOWARI ご案内・お手続き"} ref={dialogRef} onCancel={close} onClick={e=>{if(e.target===e.currentTarget)close()}}><div className={`modal-inner ${selected?'detail-modal':''}`}><button className="modal-close icon-button" aria-label="閉じる" onClick={close}><X size={21}/></button>{selected?<><img className="detail-photo" src={selected.photo} alt={`${selected.name}さんのイメージ写真`}/><div className="detail-body"><div className="eyebrow">A LITTLE ABOUT ME · サンプル会員</div><h2>{selected.name}さん <small>{selected.age}歳 / {selected.location}</small></h2><p className="detail-job">{selected.job}</p><h3>{selected.intro}</h3><p>{selected.story}</p><h4>大切にしたい価値観</h4><div className="tags">{selected.values.map(v=><span key={v}>{v}</span>)}</div><h4>好きなこと</h4><div className="hobbies">{selected.hobbies.join('　・　')}</div><p className="form-note">面談希望は保存のみです。審査前の連絡・実際のお見合いはできません。</p>{error&&<p role="alert" className="form-error">{error}</p>}<div className="detail-actions"><button className="primary" disabled={pending||!account||account.requests.includes(selected.id)} onClick={()=>run(async()=>{const result=await saveMeeting(selected.id);if(result.error){setError(result.error);return}if(result.account)setAccount(result.account);setToast('審査完了後の面談希望を保存しました');close()})}>{account?.requests.includes(selected.id)?'面談希望を保存済み':'審査後の面談を希望する'} <ArrowRight size={16}/></button><button className="secondary" disabled={pending||!account} onClick={()=>star(selected.id)}><Heart size={19} fill={account?.favorites.includes(selected.id)?'currentColor':'none'}/></button></div>{account?.status==='guest'&&<button className="text-button" onClick={()=>{setSelected(null);setModal('apply');setError('')}}>先に入会申請をする <ArrowRight size={15}/></button>}</div></>:modal==='apply'?<><div className="eyebrow">START YOUR JOURNEY</div><h2>あなたのことを、教えてください。</h2><p className="modal-description">これからの暮らしを想う、小さな一歩から。</p><form onSubmit={e=>{e.preventDefault();const data=new FormData(e.currentTarget);run(async()=>{const result=await applyForMembership({name:data.get('name'),age:data.get('age'),location:data.get('location'),values:chosen,consent:data.get('consent')==='on'});if(result.error){setError(result.error);return}if(result.account)setAccount(result.account);close();setToast('入会申請を受け付けました（体験版）')})}}><label>お名前・ニックネーム<input name="name" placeholder="例：はる" required maxLength={30}/></label><div className="form-grid"><label>年齢<input name="age" type="number" min="20" max="100" placeholder="30" required/></label><label>お住まい<select name="location">{['東京都','神奈川県','千葉県','埼玉県','その他'].map(v=><option key={v}>{v}</option>)}</select></label></div><fieldset><legend>大切にしたい価値観 <small>1〜3つ選択</small></legend><div className="value-choices">{valueOptions.map(v=><button type="button" key={v} aria-pressed={chosen.includes(v)} className={chosen.includes(v)?'chosen':''} onClick={()=>setChosen(chosen.includes(v)?chosen.filter(x=>x!==v):chosen.length<3?[...chosen,v]:chosen)}>{chosen.includes(v)?<Check size={13}/>:<Plus size={13}/>} {v}</button>)}</div></fieldset><label className="checkbox"><input type="checkbox" name="consent" required/><span>体験版のため実際の審査は行われず、入力内容はサーバー再起動時または24時間後に失われることに同意します。</span></label><p className="form-note">本人確認書類などの機微な情報は入力しないでください。対象は20歳以上です。</p>{error&&<p className="form-error" role="alert">{error}</p>}<button className="primary full" disabled={pending||!account}>{pending?'送信中…':'入会申請を送信する'} <ArrowRight size={16}/></button></form></>:modal==='filter'?<><div className="eyebrow">FIND YOUR CONNECTION</div><h2>大切にしたいことで、探す。</h2><label>お住まい<select value={region} onChange={e=>setRegion(e.target.value)}>{['すべて','東京都','神奈川県','千葉県','埼玉県'].map(v=><option key={v}>{v}</option>)}</select></label><label>価値観<select value={filter} onChange={e=>setFilter(e.target.value)}>{['すべて',...valueOptions].map(v=><option key={v}>{v}</option>)}</select></label><button className="primary full" onClick={close}>{shown.length}人のお相手を見る <ArrowRight size={16}/></button><button className="text-button" onClick={()=>{setFilter('すべて');setRegion('すべて')}}>条件をリセット</button></>:modal==='notice'?<><div className="eyebrow">INFORMATION</div><h2>TOWARIからのお知らせ</h2><div className="notice-content"><Leaf size={25}/><h3>TOWARIへ、ようこそ。</h3><p>人生をともにする人を、あなたのペースで。まずはプロフィールを眺めて、大切にしたい価値観を見つけてみてください。</p><p className="form-note">現在は体験版です。掲載会員は架空で、人物写真はAI生成のイメージです。実際の審査・連絡・お見合いは行われません。</p></div></>:<><div className="eyebrow">THE TOWARI PHILOSOPHY</div><h2>出会いの、その先まで。</h2><p className="support-intro">一時の出会いではなく、<br/>永く共に生きる人を探す。</p><div className="support-item"><ShieldCheck/><div><h3>誠実な出会いのために</h3><p>本サービスでは、本人確認と入会審査を経た方同士のご紹介を目指しています。体験版では審査を実施していません。</p></div></div><div className="support-item"><Leaf/><div><h3>価値観を、出会いの真ん中に</h3><p>年齢や職業だけでなく、ふたりでどんな暮らしを送りたいかを大切にします。</p></div></div><div className="support-item"><MessageCircle/><div><h3>自分のペースで、丁寧に</h3><p>プロフィールをじっくり読み、気になる方を保存してください。面談希望は、審査完了後の希望として保管します。</p></div></div></>}</div></dialog>
-{toast&&<div className="toast" role="status"><Check size={17}/>{toast}<button className="icon-button" aria-label="通知を閉じる" onClick={()=>setToast('')}><X size={15}/></button></div>}
-</div>}
+"use client";
+import {
+  ArrowRight,
+  ArrowUpRight,
+  Bell,
+  Check,
+  ChevronDown,
+  Heart,
+  Home,
+  Leaf,
+  LockKeyhole,
+  Menu,
+  MessageCircle,
+  Plus,
+  ShieldCheck,
+  SlidersHorizontal,
+  Sparkles,
+  UserRound,
+  UsersRound,
+  X,
+} from "lucide-react";
+import Link from "next/link";
+import { useEffect, useRef, useState, useTransition } from "react";
+import { type Member, valueOptions } from "@/lib/data";
+import type { Account } from "@/lib/store";
+import {
+  applyForMembership,
+  bootstrap,
+  saveMeeting,
+  toggleFavorite,
+} from "./actions";
+
+type Tab = "home" | "discover" | "favorites" | "meetings" | "profile";
+const nav = [
+  { id: "home" as Tab, label: "ホーム", icon: Home },
+  { id: "discover" as Tab, label: "お相手を探す", icon: UsersRound },
+  { id: "favorites" as Tab, label: "お気に入り", icon: Heart },
+  { id: "meetings" as Tab, label: "お見合い", icon: MessageCircle },
+  { id: "profile" as Tab, label: "マイプロフィール", icon: UserRound },
+];
+export default function Dashboard({
+  members,
+  view,
+}: {
+  members: Member[];
+  view: "men" | "women";
+}) {
+  const [tab, setTab] = useState<Tab>("home");
+  const [account, setAccount] = useState<Account | null>(null);
+  const [modal, setModal] = useState<
+    "apply" | "filter" | "notice" | "support" | null
+  >(null);
+  const [selected, setSelected] = useState<Member | null>(null);
+  const [filter, setFilter] = useState("すべて");
+  const [region, setRegion] = useState("すべて");
+  const [toast, setToast] = useState("");
+  const [pending, startTransition] = useTransition();
+  const [mobile, setMobile] = useState(false);
+  const [chosen, setChosen] = useState<string[]>(["何気ない日常を大切に"]);
+  const [error, setError] = useState("");
+  const [sort, setSort] = useState("recommended");
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  useEffect(() => {
+    bootstrap()
+      .then(setAccount)
+      .catch(() =>
+        setToast("接続できませんでした。ページを再読み込みしてください。"),
+      );
+  }, []);
+  useEffect(() => {
+    if (!toast) return;
+    const timer = setTimeout(() => setToast(""), 5000);
+    return () => clearTimeout(timer);
+  }, [toast]);
+  useEffect(() => {
+    if (modal || selected) dialogRef.current?.showModal();
+    else dialogRef.current?.close();
+  }, [modal, selected]);
+  const close = () => {
+    setModal(null);
+    setSelected(null);
+    setError("");
+  };
+  const run = (fn: () => Promise<void>) =>
+    startTransition(async () => {
+      try {
+        await fn();
+      } catch {
+        setToast("処理に失敗しました。もう一度お試しください。");
+      }
+    });
+  const star = (id: string) =>
+    run(async () => {
+      setAccount(await toggleFavorite(id));
+    });
+  const shown = members.filter(
+    (m) =>
+      (tab !== "favorites" || account?.favorites.includes(m.id)) &&
+      (tab !== "meetings" || account?.requests.includes(m.id)) &&
+      (filter === "すべて" || m.values.includes(filter)) &&
+      (region === "すべて" || m.location === region),
+  );
+  if (sort === "age") shown.sort((a, b) => a.age - b.age);
+  const favoriteCount = members.filter((m) =>
+    account?.favorites.includes(m.id),
+  ).length;
+  const navigate = (id: Tab) => {
+    setTab(id);
+    setFilter("すべて");
+    setRegion("すべて");
+    setMobile(false);
+  };
+  return (
+    <div className="app-shell">
+      <aside className={`sidebar ${mobile ? "is-open" : ""}`}>
+        <a className="brand" href={view === "men" ? "/?view=men" : "/"}>
+          towari<span className="brand-dot">.</span>
+        </a>
+        <div className="brand-caption">この先を、ともにする人と。</div>
+        <div className="sidebar-line" />
+        <div className="workspace-label">MY TOWARI</div>
+        <nav>
+          {nav.map(({ id, label, icon: Icon }) => (
+            <button
+              type="button"
+              key={id}
+              className={`nav-item ${tab === id ? "active" : ""}`}
+              onClick={() => navigate(id)}
+            >
+              <Icon size={19} />
+              <span>{label}</span>
+              {id === "favorites" && favoriteCount > 0 && (
+                <b>{favoriteCount}</b>
+              )}
+              {id === "home" && <span className="active-dot" />}
+            </button>
+          ))}
+        </nav>
+        <div className="side-note">
+          <div className="small-emblem">
+            <Leaf size={19} />
+          </div>
+          <p>出会いの、その先まで。</p>
+          <span>
+            あなたらしい歩幅で、
+            <br />
+            ふたりの未来を見つけましょう。
+          </span>
+          <button type="button" onClick={() => setModal("support")}>
+            TOWARIのサポート <ArrowUpRight size={14} />
+          </button>
+        </div>
+        <div className="sidebar-bottom">
+          <div className="secure">
+            <ShieldCheck size={16} /> 審査制だから、安心の出会い
+          </div>
+          <button
+            type="button"
+            className="side-user"
+            onClick={() => navigate("profile")}
+          >
+            <div className="avatar">
+              <UserRound size={20} />
+            </div>
+            <div>
+              <strong>{account?.name ?? "ゲスト"} さん</strong>
+              <span>
+                {account?.status === "pending"
+                  ? "入会申請受付済み"
+                  : "体験アカウント"}
+              </span>
+            </div>
+            <ChevronDown size={15} />
+          </button>
+        </div>
+      </aside>
+      <div className="main-shell">
+        <header className="topbar">
+          <div className="breadcrumb">
+            <button
+              type="button"
+              className="mobile-menu icon-button"
+              aria-label="メニュー"
+              onClick={() => setMobile(!mobile)}
+            >
+              <Menu size={22} />
+            </button>
+            <span>MY TOWARI</span>
+            <span className="slash">/</span>
+            <strong>{nav.find((n) => n.id === tab)?.label}</strong>
+          </div>
+          <div className="header-actions">
+            <span className="demo-badge">
+              PREVIEW <span>体験版</span>
+            </span>
+            <button
+              type="button"
+              className="icon-button notification"
+              aria-label="お知らせ"
+              onClick={() => setModal("notice")}
+            >
+              <Bell size={19} />
+              <i />
+            </button>
+            <button
+              type="button"
+              className="avatar small"
+              aria-label="プロフィール"
+              onClick={() => navigate("profile")}
+            >
+              <UserRound size={18} />
+            </button>
+          </div>
+        </header>
+        <main>
+          <div className="view-switch-row">
+            <div className="view-context">
+              <UsersRound size={15} />
+              <span>
+                {view === "men"
+                  ? "女性会員向け · 男性のお相手をご紹介"
+                  : "男性会員向け · 女性のお相手をご紹介"}
+              </span>
+            </div>
+            <nav className="view-switch" aria-label="体験する会員画面">
+              <Link
+                href="/"
+                aria-current={view === "women" ? "page" : undefined}
+              >
+                女性のお相手
+              </Link>
+              <Link
+                href="/?view=men"
+                aria-current={view === "men" ? "page" : undefined}
+              >
+                男性のお相手
+              </Link>
+            </nav>
+          </div>
+          <div className="page-heading">
+            <div>
+              <div className="eyebrow">A NEW CHAPTER, TOGETHER</div>
+              <h1>
+                {tab === "home"
+                  ? "心が通う出会いを、ここから。"
+                  : tab === "discover"
+                    ? "ふたりの未来を、見つける。"
+                    : tab === "favorites"
+                      ? "気になる人を、大切に。"
+                      : tab === "meetings"
+                        ? "出会いを、一歩ずつ。"
+                        : "あなたらしさを、伝えよう。"}
+              </h1>
+              <p>
+                {tab === "home"
+                  ? "条件だけでは見つからない、あなたらしいご縁をお届けします。"
+                  : tab === "favorites"
+                    ? "もう少し知りたい。その気持ちから、ご縁は始まります。"
+                    : tab === "meetings"
+                      ? "審査完了後に会ってみたいお相手を、ここで確認できます。"
+                      : tab === "profile"
+                        ? "大切にしていることが、これからの出会いにつながります。"
+                        : "大切にしたい価値観から、人生をともにするお相手を。"}
+              </p>
+            </div>
+            <div className="heading-seal">
+              <ShieldCheck size={15} /> 一つひとつのご縁を、丁寧に。
+            </div>
+          </div>
+          {tab === "home" && (
+            <>
+              <section className="hero">
+                <div className="hero-content">
+                  <div className="hero-eyebrow">
+                    <span /> MEET YOUR LIFETIME PARTNER
+                  </div>
+                  <h2>
+                    何気ない毎日が、
+                    <br />
+                    かけがえのない日々になる。
+                  </h2>
+                  <p>
+                    好きなことも、大切にしたいことも。
+                    <br />
+                    あなたと同じ未来を想う人が、きっといます。
+                  </p>
+                  <button type="button" onClick={() => navigate("discover")}>
+                    あなたに合うお相手を見る <ArrowRight size={17} />
+                  </button>
+                  <div className="hero-index">
+                    <span>01</span>
+                    <i />
+                    <span>OUR PHILOSOPHY</span>
+                  </div>
+                </div>
+                <div
+                  className="hero-image"
+                  role="img"
+                  aria-label="緑に包まれた穏やかな暮らし"
+                >
+                  <div className="hero-image-label">
+                    A life shared.
+                    <br />
+                    <span>A love that stays.</span>
+                  </div>
+                </div>
+              </section>
+              <div className="onboarding">
+                <div className="onboarding-icon">
+                  <ShieldCheck size={22} />
+                </div>
+                <div>
+                  <strong>
+                    {account?.status === "pending"
+                      ? "入会申請を受け付けました"
+                      : "安心できる出会いは、お互いを知ることから。"}
+                  </strong>
+                  <p>
+                    {account?.status === "pending"
+                      ? "現在は体験環境のため、実際の本人確認・審査は行われません。"
+                      : "プロフィールを登録して、あなたの大切にしたい価値観を教えてください。"}
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() =>
+                    account?.status === "pending"
+                      ? navigate("profile")
+                      : setModal("apply")
+                  }
+                >
+                  {account?.status === "pending"
+                    ? "申請内容を見る"
+                    : "入会申請をはじめる"}{" "}
+                  <ArrowRight size={16} />
+                </button>
+              </div>
+            </>
+          )}
+          {tab === "profile" ? (
+            <section className="profile-panel">
+              <div className="profile-symbol">
+                <UserRound size={38} />
+              </div>
+              <div className="eyebrow">YOUR STORY</div>
+              <h2>{account?.name ?? "ゲスト"} さん</h2>
+              <p>
+                {account?.status === "pending"
+                  ? `${account.age}歳 / ${account.location}`
+                  : "あなたの価値観や、思い描く暮らしを教えてください。"}
+              </p>
+              <div className="profile-values">
+                {account?.values.map((v) => (
+                  <span className="tag" key={v}>
+                    {v}
+                  </span>
+                ))}
+              </div>
+              <div className="review-state">
+                <ShieldCheck size={21} />
+                <div>
+                  <strong>
+                    {account?.status === "pending"
+                      ? "申請受付済み・審査前"
+                      : "入会申請前"}
+                  </strong>
+                  <p>体験環境では審査の承認や、実際のお見合いは行いません。</p>
+                </div>
+              </div>
+              {account?.status !== "pending" && (
+                <button
+                  type="button"
+                  className="primary"
+                  onClick={() => setModal("apply")}
+                >
+                  プロフィールを登録する <ArrowRight size={16} />
+                </button>
+              )}
+            </section>
+          ) : (
+            <div className="content-grid">
+              <section className="member-section">
+                <div className="section-heading">
+                  <div>
+                    <div className="eyebrow">
+                      {tab === "favorites"
+                        ? "YOUR FAVORITES"
+                        : tab === "meetings"
+                          ? "YOUR NEXT STEP"
+                          : "RECOMMENDED FOR YOU"}
+                    </div>
+                    <h2>
+                      {tab === "favorites"
+                        ? "お気に入りのお相手"
+                        : tab === "meetings"
+                          ? "面談を希望したお相手"
+                          : "価値観からつながる、お相手"}{" "}
+                      <span>{shown.length}</span>
+                    </h2>
+                  </div>
+                  <button
+                    type="button"
+                    className="filter-button"
+                    onClick={() => setModal("filter")}
+                  >
+                    <SlidersHorizontal size={15} /> 絞り込み
+                    {region !== "すべて" && <i />}
+                  </button>
+                </div>
+                <div className="filter-row">
+                  <div className="chips">
+                    {[
+                      "すべて",
+                      "何気ない日常を大切に",
+                      "お互いを尊重したい",
+                      "家族との時間",
+                    ].map((v) => (
+                      <button
+                        type="button"
+                        key={v}
+                        className={filter === v ? "selected" : ""}
+                        onClick={() => setFilter(v)}
+                      >
+                        {v === "すべて" && <Sparkles size={13} />} {v}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+                <div className="result-line">
+                  <span>
+                    {tab === "meetings"
+                      ? "審査完了後のご希望として保存されています"
+                      : "未来の暮らしを、一緒に思い描ける人。"}
+                  </span>
+                  <select
+                    aria-label="並び順"
+                    value={sort}
+                    onChange={(e) => setSort(e.target.value)}
+                  >
+                    <option value="recommended">おすすめ順</option>
+                    <option value="age">年齢が若い順</option>
+                  </select>
+                </div>
+                <div className="member-grid">
+                  {shown.map((m, index) => (
+                    <article className="member-card" key={m.id}>
+                      {/* biome-ignore lint/a11y/noStaticElementInteractions: mouse shortcut; the profile button below is the keyboard path */}
+                      {/* biome-ignore lint/a11y/useKeyWithClickEvents: same as above */}
+                      <div
+                        className="member-photo"
+                        onClick={() => setSelected(m)}
+                      >
+                        <img
+                          src={m.photo}
+                          alt={`${m.name}さんのイメージ写真`}
+                          loading={index < 3 ? "eager" : "lazy"}
+                        />
+                        <span className="photo-badge">
+                          <Leaf size={12} />{" "}
+                          {m.values.some((v) => account?.values.includes(v))
+                            ? "大切にしたい価値観が共通"
+                            : "暮らしの価値観から"}
+                        </span>
+                        <button
+                          type="button"
+                          disabled={pending || !account}
+                          className={`favorite ${account?.favorites.includes(m.id) ? "saved" : ""}`}
+                          aria-label={`${m.name}さんを${account?.favorites.includes(m.id) ? "お気に入りから削除" : "お気に入りに追加"}`}
+                          aria-pressed={!!account?.favorites.includes(m.id)}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            star(m.id);
+                          }}
+                        >
+                          <Heart
+                            size={18}
+                            fill={
+                              account?.favorites.includes(m.id)
+                                ? "currentColor"
+                                : "none"
+                            }
+                          />
+                        </button>
+                      </div>
+                      <button
+                        type="button"
+                        className="member-info"
+                        onClick={() => setSelected(m)}
+                      >
+                        <div className="name-row">
+                          <h3>
+                            {m.name}
+                            <span>さん</span>
+                          </h3>
+                          <span>
+                            {m.age}歳 <i /> {m.location}
+                          </span>
+                        </div>
+                        <div className="occupation">
+                          {m.job}
+                          <span>
+                            <ShieldCheck size={12} /> サンプル会員
+                          </span>
+                        </div>
+                        <p className="member-quote">{m.intro}</p>
+                        <div className="tags">
+                          {m.values.map((v) => (
+                            <span key={v}>{v}</span>
+                          ))}
+                        </div>
+                        <div className="view-profile">
+                          プロフィールを見る <ArrowUpRight size={14} />
+                        </div>
+                      </button>
+                    </article>
+                  ))}
+                </div>
+                {shown.length === 0 && (
+                  <div className="empty">
+                    <Heart size={30} />
+                    <h3>
+                      {tab === "favorites"
+                        ? "気になるお相手を保存しましょう"
+                        : tab === "meetings"
+                          ? "面談希望はまだありません"
+                          : "条件に合うお相手がいません"}
+                    </h3>
+                    <p>
+                      {tab === "meetings"
+                        ? "プロフィールから、審査後の面談希望を登録できます。"
+                        : "条件を変えたり、ほかのお相手のプロフィールもご覧ください。"}
+                    </p>
+                    <button
+                      type="button"
+                      className="text-button"
+                      onClick={() => navigate("discover")}
+                    >
+                      お相手を探す <ArrowRight size={16} />
+                    </button>
+                  </div>
+                )}
+                <div className="list-footer">
+                  <Leaf size={15} />
+                  <span>急がず、あなたのペースで。ご縁は、ここから。</span>
+                </div>
+              </section>
+              <aside className="right-column">
+                <section className="journey-card">
+                  <div className="eyebrow">YOUR JOURNEY</div>
+                  <h3>
+                    未来につながる、
+                    <br />
+                    小さな一歩。
+                  </h3>
+                  <div className="progress-label">
+                    <span>ご利用までのステップ</span>
+                    <strong>
+                      {account?.status === "pending" ? "2" : "1"}
+                      <small> / 4</small>
+                    </strong>
+                  </div>
+                  <div className="progress-bar">
+                    <i
+                      style={{
+                        width: account?.status === "pending" ? "50%" : "25%",
+                      }}
+                    />
+                  </div>
+                  <ol>
+                    <li className="done">
+                      <span>
+                        <Check size={12} />
+                      </span>
+                      <div>体験アカウントではじめる</div>
+                    </li>
+                    <li
+                      className={
+                        account?.status === "pending" ? "done" : "current"
+                      }
+                    >
+                      <span>
+                        {account?.status === "pending" ? (
+                          <Check size={12} />
+                        ) : (
+                          "2"
+                        )}
+                      </span>
+                      <div>
+                        プロフィール・入会申請
+                        <small>あなたのことを教えてください</small>
+                      </div>
+                    </li>
+                    <li>
+                      <span>3</span>
+                      <div>本人確認・入会審査</div>
+                    </li>
+                    <li>
+                      <span>4</span>
+                      <div>お相手との出会い</div>
+                    </li>
+                  </ol>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      account?.status === "pending"
+                        ? navigate("profile")
+                        : setModal("apply")
+                    }
+                  >
+                    {account?.status === "pending"
+                      ? "申請内容を確認する"
+                      : "プロフィールを登録する"}{" "}
+                    <ArrowRight size={15} />
+                  </button>
+                </section>
+                <section className="values-card">
+                  <div className="eyebrow">BEYOND THE PROFILE</div>
+                  <div className="line-art">
+                    <Leaf size={39} strokeWidth={1} />
+                  </div>
+                  <h3>
+                    「条件」の先にある、
+                    <br />
+                    ふたりの価値観。
+                  </h3>
+                  <p>
+                    どんな毎日を送りたいか。
+                    <br />
+                    何を大切に、生きていきたいか。
+                    <br />
+                    そこから始まる出会いがあります。
+                  </p>
+                  <button type="button" onClick={() => setModal("support")}>
+                    TOWARIが大切にすること <ArrowUpRight size={14} />
+                  </button>
+                </section>
+                <div className="privacy-note">
+                  <LockKeyhole size={14} />
+                  <p>
+                    あなたの情報を、大切に。
+                    <br />
+                    会員は架空で、人物写真はAI生成です。
+                  </p>
+                </div>
+              </aside>
+            </div>
+          )}
+          <footer>
+            <span className="footer-logo">towari.</span>
+            <span>この先を、ともにする人と。</span>
+            <small>© {new Date().getFullYear()} TOWARI</small>
+          </footer>
+        </main>
+      </div>
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: backdrop click only; Esc is handled by onCancel */}
+      <dialog
+        aria-label={
+          selected
+            ? `${selected.name}さんのプロフィール`
+            : "TOWARI ご案内・お手続き"
+        }
+        ref={dialogRef}
+        onCancel={close}
+        onClick={(e) => {
+          if (e.target === e.currentTarget) close();
+        }}
+      >
+        <div className={`modal-inner ${selected ? "detail-modal" : ""}`}>
+          <button
+            type="button"
+            className="modal-close icon-button"
+            aria-label="閉じる"
+            onClick={close}
+          >
+            <X size={21} />
+          </button>
+          {selected ? (
+            <>
+              <img
+                className="detail-photo"
+                src={selected.photo}
+                alt={`${selected.name}さんのイメージ写真`}
+              />
+              <div className="detail-body">
+                <div className="eyebrow">A LITTLE ABOUT ME · サンプル会員</div>
+                <h2>
+                  {selected.name}さん{" "}
+                  <small>
+                    {selected.age}歳 / {selected.location}
+                  </small>
+                </h2>
+                <p className="detail-job">{selected.job}</p>
+                <h3>{selected.intro}</h3>
+                <p>{selected.story}</p>
+                <h4>大切にしたい価値観</h4>
+                <div className="tags">
+                  {selected.values.map((v) => (
+                    <span key={v}>{v}</span>
+                  ))}
+                </div>
+                <h4>好きなこと</h4>
+                <div className="hobbies">{selected.hobbies.join("　・　")}</div>
+                <p className="form-note">
+                  面談希望は保存のみです。審査前の連絡・実際のお見合いはできません。
+                </p>
+                {error && (
+                  <p role="alert" className="form-error">
+                    {error}
+                  </p>
+                )}
+                <div className="detail-actions">
+                  <button
+                    type="button"
+                    className="primary"
+                    disabled={
+                      pending ||
+                      !account ||
+                      account.requests.includes(selected.id)
+                    }
+                    onClick={() =>
+                      run(async () => {
+                        const result = await saveMeeting(selected.id);
+                        if (result.error) {
+                          setError(result.error);
+                          return;
+                        }
+                        if (result.account) setAccount(result.account);
+                        setToast("審査完了後の面談希望を保存しました");
+                        close();
+                      })
+                    }
+                  >
+                    {account?.requests.includes(selected.id)
+                      ? "面談希望を保存済み"
+                      : "審査後の面談を希望する"}{" "}
+                    <ArrowRight size={16} />
+                  </button>
+                  <button
+                    type="button"
+                    className="secondary"
+                    disabled={pending || !account}
+                    onClick={() => star(selected.id)}
+                  >
+                    <Heart
+                      size={19}
+                      fill={
+                        account?.favorites.includes(selected.id)
+                          ? "currentColor"
+                          : "none"
+                      }
+                    />
+                  </button>
+                </div>
+                {account?.status === "guest" && (
+                  <button
+                    type="button"
+                    className="text-button"
+                    onClick={() => {
+                      setSelected(null);
+                      setModal("apply");
+                      setError("");
+                    }}
+                  >
+                    先に入会申請をする <ArrowRight size={15} />
+                  </button>
+                )}
+              </div>
+            </>
+          ) : modal === "apply" ? (
+            <>
+              <div className="eyebrow">START YOUR JOURNEY</div>
+              <h2>あなたのことを、教えてください。</h2>
+              <p className="modal-description">
+                これからの暮らしを想う、小さな一歩から。
+              </p>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  const data = new FormData(e.currentTarget);
+                  run(async () => {
+                    const result = await applyForMembership({
+                      name: data.get("name"),
+                      age: data.get("age"),
+                      location: data.get("location"),
+                      values: chosen,
+                      consent: data.get("consent") === "on",
+                    });
+                    if (result.error) {
+                      setError(result.error);
+                      return;
+                    }
+                    if (result.account) setAccount(result.account);
+                    close();
+                    setToast("入会申請を受け付けました（体験版）");
+                  });
+                }}
+              >
+                <label>
+                  お名前・ニックネーム
+                  <input
+                    name="name"
+                    placeholder="例：はる"
+                    required
+                    maxLength={30}
+                  />
+                </label>
+                <div className="form-grid">
+                  <label>
+                    年齢
+                    <input
+                      name="age"
+                      type="number"
+                      min="20"
+                      max="100"
+                      placeholder="30"
+                      required
+                    />
+                  </label>
+                  <label>
+                    お住まい
+                    <select name="location">
+                      {["東京都", "神奈川県", "千葉県", "埼玉県", "その他"].map(
+                        (v) => (
+                          <option key={v}>{v}</option>
+                        ),
+                      )}
+                    </select>
+                  </label>
+                </div>
+                <fieldset>
+                  <legend>
+                    大切にしたい価値観 <small>1〜3つ選択</small>
+                  </legend>
+                  <div className="value-choices">
+                    {valueOptions.map((v) => (
+                      <button
+                        type="button"
+                        key={v}
+                        aria-pressed={chosen.includes(v)}
+                        className={chosen.includes(v) ? "chosen" : ""}
+                        onClick={() =>
+                          setChosen(
+                            chosen.includes(v)
+                              ? chosen.filter((x) => x !== v)
+                              : chosen.length < 3
+                                ? [...chosen, v]
+                                : chosen,
+                          )
+                        }
+                      >
+                        {chosen.includes(v) ? (
+                          <Check size={13} />
+                        ) : (
+                          <Plus size={13} />
+                        )}{" "}
+                        {v}
+                      </button>
+                    ))}
+                  </div>
+                </fieldset>
+                <label className="checkbox">
+                  <input type="checkbox" name="consent" required />
+                  <span>
+                    体験版のため実際の審査は行われず、入力内容はサーバー再起動時または24時間後に失われることに同意します。
+                  </span>
+                </label>
+                <p className="form-note">
+                  本人確認書類などの機微な情報は入力しないでください。対象は20歳以上です。
+                </p>
+                {error && (
+                  <p className="form-error" role="alert">
+                    {error}
+                  </p>
+                )}
+                <button
+                  type="submit"
+                  className="primary full"
+                  disabled={pending || !account}
+                >
+                  {pending ? "送信中…" : "入会申請を送信する"}{" "}
+                  <ArrowRight size={16} />
+                </button>
+              </form>
+            </>
+          ) : modal === "filter" ? (
+            <>
+              <div className="eyebrow">FIND YOUR CONNECTION</div>
+              <h2>大切にしたいことで、探す。</h2>
+              <label>
+                お住まい
+                <select
+                  value={region}
+                  onChange={(e) => setRegion(e.target.value)}
+                >
+                  {["すべて", "東京都", "神奈川県", "千葉県", "埼玉県"].map(
+                    (v) => (
+                      <option key={v}>{v}</option>
+                    ),
+                  )}
+                </select>
+              </label>
+              <label>
+                価値観
+                <select
+                  value={filter}
+                  onChange={(e) => setFilter(e.target.value)}
+                >
+                  {["すべて", ...valueOptions].map((v) => (
+                    <option key={v}>{v}</option>
+                  ))}
+                </select>
+              </label>
+              <button type="button" className="primary full" onClick={close}>
+                {shown.length}人のお相手を見る <ArrowRight size={16} />
+              </button>
+              <button
+                type="button"
+                className="text-button"
+                onClick={() => {
+                  setFilter("すべて");
+                  setRegion("すべて");
+                }}
+              >
+                条件をリセット
+              </button>
+            </>
+          ) : modal === "notice" ? (
+            <>
+              <div className="eyebrow">INFORMATION</div>
+              <h2>TOWARIからのお知らせ</h2>
+              <div className="notice-content">
+                <Leaf size={25} />
+                <h3>TOWARIへ、ようこそ。</h3>
+                <p>
+                  人生をともにする人を、あなたのペースで。まずはプロフィールを眺めて、大切にしたい価値観を見つけてみてください。
+                </p>
+                <p className="form-note">
+                  現在は体験版です。掲載会員は架空で、人物写真はAI生成のイメージです。実際の審査・連絡・お見合いは行われません。
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="eyebrow">THE TOWARI PHILOSOPHY</div>
+              <h2>出会いの、その先まで。</h2>
+              <p className="support-intro">
+                一時の出会いではなく、
+                <br />
+                永く共に生きる人を探す。
+              </p>
+              <div className="support-item">
+                <ShieldCheck />
+                <div>
+                  <h3>誠実な出会いのために</h3>
+                  <p>
+                    本サービスでは、本人確認と入会審査を経た方同士のご紹介を目指しています。体験版では審査を実施していません。
+                  </p>
+                </div>
+              </div>
+              <div className="support-item">
+                <Leaf />
+                <div>
+                  <h3>価値観を、出会いの真ん中に</h3>
+                  <p>
+                    年齢や職業だけでなく、ふたりでどんな暮らしを送りたいかを大切にします。
+                  </p>
+                </div>
+              </div>
+              <div className="support-item">
+                <MessageCircle />
+                <div>
+                  <h3>自分のペースで、丁寧に</h3>
+                  <p>
+                    プロフィールをじっくり読み、気になる方を保存してください。面談希望は、審査完了後の希望として保管します。
+                  </p>
+                </div>
+              </div>
+            </>
+          )}
+        </div>
+      </dialog>
+      {toast && (
+        <div className="toast" role="status">
+          <Check size={17} />
+          {toast}
+          <button
+            type="button"
+            className="icon-button"
+            aria-label="通知を閉じる"
+            onClick={() => setToast("")}
+          >
+            <X size={15} />
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

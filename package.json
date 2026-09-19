@@ -7,21 +7,29 @@
     "build": "next build",
     "start": "next start --hostname 0.0.0.0",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test lib/*.test.ts"
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "lint": "biome check",
+    "format": "biome check --write",
+    "knip": "knip",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "lucide-react": "^0.468.0",
     "next": "^16.3.5",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
-    "server-only": "^0.0.1",
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@biomejs/biome": "^2.5.14",
+    "@playwright/test": "^1.63.0",
     "@types/node": "^22.0.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
-    "tsx": "^4.19.0",
-    "typescript": "^5.7.0"
-  }
+    "knip": "^6.37.0",
+    "typescript": "^5.7.0",
+    "vitest": "^5.0.1"
+  },
+  "packageManager": "pnpm@10.28.1"
 }

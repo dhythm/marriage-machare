@@ -7,11 +7,23 @@
 Node.js 20.9 以上で実行してください。
 
 ```sh
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-http://localhost:3000 で表示できます。本番モードは `npm run build` のあと `npm start`。`npm test` でサーバーの状態管理・入力検証を確認できます。
+http://localhost:3000 で表示できます。本番モードは `pnpm build` のあと `pnpm start`。
+
+## 開発コマンド
+
+| コマンド | 内容 |
+| --- | --- |
+| `pnpm typecheck` | tsc による型チェック |
+| `pnpm lint` / `pnpm format` | Biome による検査 / 自動修正 |
+| `pnpm knip` | 未使用のファイル・export・依存の検出 |
+| `pnpm test` | vitest による単体テスト |
+| `pnpm e2e` | Playwright による E2E（事前に `pnpm build`、初回は `pnpm exec playwright install chromium`） |
+
+GitHub Actions（.github/workflows/ci.yml）で push / pull request ごとに上記すべてを実行します。
 
 ## 実装
 
